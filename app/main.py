@@ -40,8 +40,13 @@ from deck_splitter import split_deck
 
 # ── app setup ──────────────────────────────────────────────────────────────────
 
+# Support two layouts:
+#   local dev  → project/app/main.py + project/static/
+#   Docker     → /app/main.py        + /app/static/
 BASE_DIR   = Path(__file__).parent.parent
 STATIC_DIR = BASE_DIR / "static"
+if not STATIC_DIR.exists():
+    STATIC_DIR = Path(__file__).parent / "static"
 
 app = FastAPI(title="Slide Deck Segmenter")
 app.add_middleware(
