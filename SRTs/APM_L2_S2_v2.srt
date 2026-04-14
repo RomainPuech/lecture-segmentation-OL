@@ -1,0 +1,364 @@
+1
+00:00:00,000 --> 00:00:04,080
+INSTRUCTOR: The key idea
+in ROAD3 is twofold.
+
+2
+00:00:04,080 --> 00:00:08,520
+First, we perform prognostic
+matching exactly as in ROAD1
+
+3
+00:00:08,520 --> 00:00:12,320
+to mitigate observed
+confounding by aligning patients
+
+4
+00:00:12,320 --> 00:00:16,160
+on baseline prognosis and
+normalized covariates.
+
+5
+00:00:16,160 --> 00:00:20,000
+Second, we estimate and
+balance a latent unobserved
+
+6
+00:00:20,000 --> 00:00:23,160
+prognostic factor at
+the patient level.
+
+7
+00:00:23,160 --> 00:00:26,520
+Intuitively, this factor--
+and I'll call it U tilde--
+
+8
+00:00:26,520 --> 00:00:29,480
+captures the portion
+of a patient's risk
+
+9
+00:00:29,480 --> 00:00:33,920
+for a bad outcome that remains
+unexplained after accounting
+
+10
+00:00:33,920 --> 00:00:38,160
+for observed covariates
+and our prognostic model.
+
+11
+00:00:38,160 --> 00:00:41,800
+If we balance this latent
+signal across treatment arms
+
+12
+00:00:41,800 --> 00:00:45,440
+in addition to ROAD1's
+balancing of observed features
+
+13
+00:00:45,440 --> 00:00:48,560
+and prognosis, the
+cohort should behave
+
+14
+00:00:48,560 --> 00:00:52,840
+as if randomized with respect
+to both observed influences
+
+15
+00:00:52,840 --> 00:00:55,920
+and the aggregate
+unobserved ones.
+
+16
+00:00:55,920 --> 00:01:00,160
+After these two steps, we fit a
+standard multi-variable survival
+
+17
+00:01:00,160 --> 00:01:04,840
+model on the transformed cohort
+to obtain the final hazard ratio
+
+18
+00:01:04,840 --> 00:01:08,040
+and estimate the final
+treatment effect.
+
+19
+00:01:08,040 --> 00:01:11,360
+That's the ROAD3
+pipeline in a nutshell.
+
+20
+00:01:11,360 --> 00:01:14,480
+Next, we'll unpack
+how we estimate
+
+21
+00:01:14,480 --> 00:01:18,400
+and how we balance these
+unobserved latent factor
+
+22
+00:01:18,400 --> 00:01:22,040
+of step two in practice.
+
+23
+00:01:22,040 --> 00:01:24,680
+Now let's take a
+step back and think
+
+24
+00:01:24,680 --> 00:01:29,480
+about what unobserved
+confounding really is.
+
+25
+00:01:29,480 --> 00:01:32,560
+So here's a simple
+way to think about it.
+
+26
+00:01:32,560 --> 00:01:35,600
+As we showed earlier,
+imagine two columns,
+
+27
+00:01:35,600 --> 00:01:39,200
+untreated patients on the
+left and treated patients
+
+28
+00:01:39,200 --> 00:01:40,680
+on the right.
+
+29
+00:01:40,680 --> 00:01:45,600
+For this illustration, let's
+focus on the treated side.
+
+30
+00:01:45,600 --> 00:01:49,720
+Within the treated group, we
+can split patients by outcome--
+
+31
+00:01:49,720 --> 00:01:53,340
+on the left, those with a
+good outcome, on the right,
+
+32
+00:01:53,340 --> 00:01:55,400
+those with a bad outcome.
+
+33
+00:01:55,400 --> 00:01:59,320
+Now let's zoom in on a single
+patient with a bad outcome,
+
+34
+00:01:59,320 --> 00:02:03,440
+John, and his nearest treated
+neighbors with good outcomes--
+
+35
+00:02:03,440 --> 00:02:06,600
+Mary, Peter, and Tom.
+
+36
+00:02:06,600 --> 00:02:09,680
+John, Mary, Peter,
+and Tom are all
+
+37
+00:02:09,680 --> 00:02:11,880
+similar in observed
+features that
+
+38
+00:02:11,880 --> 00:02:15,880
+affect this therapy like
+age in tumor location,
+
+39
+00:02:15,880 --> 00:02:20,110
+and they also received
+comparable treatment exposure.
+
+40
+00:02:20,110 --> 00:02:24,550
+However, John had a bad
+outcome while his neighbors
+
+41
+00:02:24,550 --> 00:02:26,710
+had good outcomes.
+
+42
+00:02:26,710 --> 00:02:29,450
+If according to a
+prognostic model
+
+43
+00:02:29,450 --> 00:02:33,830
+John's predicted baseline risk
+looked no worse, perhaps even
+
+44
+00:02:33,830 --> 00:02:38,350
+better, than his neighbors,
+then why did he do worse?
+
+45
+00:02:38,350 --> 00:02:42,990
+The natural explanation is the
+unobserved prognostic burden.
+
+46
+00:02:42,990 --> 00:02:46,790
+Something not captured in
+our recorded covariates
+
+47
+00:02:46,790 --> 00:02:50,350
+tipped John toward
+a bad trajectory.
+
+48
+00:02:50,350 --> 00:02:54,740
+ROAD3 aims to quantify that
+gap through this feature, U,
+
+49
+00:02:54,740 --> 00:02:58,710
+and then balance it across arms.
+
+50
+00:02:58,710 --> 00:03:01,990
+Before we compute anything,
+here are the assumptions
+
+51
+00:03:01,990 --> 00:03:06,850
+we'll use for these unobserved
+latent factor U. First,
+
+52
+00:03:06,850 --> 00:03:10,750
+we assume that it increases
+a patient's chances
+
+53
+00:03:10,750 --> 00:03:12,950
+of a bad outcome.
+
+54
+00:03:12,950 --> 00:03:16,030
+Think of it as unobserved
+prognostic burden.
+
+55
+00:03:16,030 --> 00:03:19,590
+A higher U pushes risk up.
+
+56
+00:03:19,590 --> 00:03:23,190
+Second, for all patients
+with a good outcome,
+
+57
+00:03:23,190 --> 00:03:27,030
+we set Ui equals 0.
+
+58
+00:03:27,030 --> 00:03:31,470
+In our example, that means
+that the unobserved feature
+
+59
+00:03:31,470 --> 00:03:35,070
+of Mary, Peter, and Tom is 0.
+
+60
+00:03:35,070 --> 00:03:37,190
+This doesn't mean
+they had no risk.
+
+61
+00:03:37,190 --> 00:03:40,270
+It means any unobserved
+burden did not
+
+62
+00:03:40,270 --> 00:03:43,270
+tip them into a bad outcome.
+
+63
+00:03:43,270 --> 00:03:46,670
+Third, for all patients
+with a bad outcome,
+
+64
+00:03:46,670 --> 00:03:52,790
+the unobserved factor U-I leaves
+on the interval between 0 and 1
+
+65
+00:03:52,790 --> 00:03:54,870
+after normalization.
+
+66
+00:03:54,870 --> 00:03:56,670
+So for John, a--
+
+67
+00:03:56,670 --> 00:04:00,950
+the unobserved factor U
+John will be between 0 and 1
+
+68
+00:04:00,950 --> 00:04:05,310
+with larger values indicating
+more unexplained unobserved
+
+69
+00:04:05,310 --> 00:04:09,550
+burden consistent with
+his adverse trajectory.
+
+70
+00:04:09,550 --> 00:04:13,590
+Fourth, we assume John,
+Mary, Peter, and Tom
+
+71
+00:04:13,590 --> 00:04:17,470
+have similar treatment effect
+since they are neighbors.
+
+72
+00:04:17,470 --> 00:04:21,029
+Therefore any observed
+difference in outcomes
+
+73
+00:04:21,029 --> 00:04:25,070
+is attributed to only
+small dissimilarities
+
+74
+00:04:25,070 --> 00:04:29,990
+in their observed features or
+mainly unobserved factors that
+
+75
+00:04:29,990 --> 00:04:33,140
+led to different
+treatment response.
+
+76
+00:04:33,140 --> 00:04:34,000

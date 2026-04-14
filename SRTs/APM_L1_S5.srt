@@ -1,0 +1,155 @@
+1
+00:00:00,000 --> 00:00:00,740
+
+
+2
+00:00:00,740 --> 00:00:03,470
+INSTRUCTOR: To conclude,
+let's summarize
+
+3
+00:00:03,470 --> 00:00:06,110
+what we have covered today.
+
+4
+00:00:06,110 --> 00:00:09,530
+In part one, we
+introduced a new framework
+
+5
+00:00:09,530 --> 00:00:13,370
+to identify patients who
+do not need treatment
+
+6
+00:00:13,370 --> 00:00:20,120
+using interpretable AI applied
+to transformed real-world data.
+
+7
+00:00:20,120 --> 00:00:22,670
+This helped us
+reduce overtreatment
+
+8
+00:00:22,670 --> 00:00:26,510
+in settings where treatment
+efficacy is already
+
+9
+00:00:26,510 --> 00:00:28,700
+well established.
+
+10
+00:00:28,700 --> 00:00:32,119
+In part two, we went further.
+
+11
+00:00:32,119 --> 00:00:35,840
+We introduced a framework
+to identify patients
+
+12
+00:00:35,840 --> 00:00:39,110
+who truly benefit
+from treatment, even
+
+13
+00:00:39,110 --> 00:00:42,890
+when unobserved
+confounding is present.
+
+14
+00:00:42,890 --> 00:00:46,250
+This was achieved by
+integrating real-world data
+
+15
+00:00:46,250 --> 00:00:50,540
+with external RCT
+benchmarks and applying
+
+16
+00:00:50,540 --> 00:00:57,230
+interpretable AI to safely
+extrapolate subgroup effects.
+
+17
+00:00:57,230 --> 00:01:03,550
+In part three, we turned to
+RCT data directly and asked,
+
+18
+00:01:03,550 --> 00:01:09,190
+can interpretable AI outperform
+conventional subgroup analysis?
+
+19
+00:01:09,190 --> 00:01:12,520
+We showed that it
+can by identifying
+
+20
+00:01:12,520 --> 00:01:18,490
+more accurate, data-driven, and
+clinically meaningful subgroups.
+
+21
+00:01:18,490 --> 00:01:21,580
+But something is still missing.
+
+22
+00:01:21,580 --> 00:01:25,720
+The framework we introduced
+in part two, or row two,
+
+23
+00:01:25,720 --> 00:01:28,720
+does not apply in all cases.
+
+24
+00:01:28,720 --> 00:01:34,900
+It depends on having a relevant
+RCT to guide weight tuning.
+
+25
+00:01:34,900 --> 00:01:38,470
+So what happens when
+there is no such RCT,
+
+26
+00:01:38,470 --> 00:01:42,670
+or when the RCT exists, but
+the trial population is too
+
+27
+00:01:42,670 --> 00:01:44,890
+different to be informative?
+
+28
+00:01:44,890 --> 00:01:48,640
+That's where row three comes in.
+
+29
+00:01:48,640 --> 00:01:51,010
+In the next lecture,
+we will show you
+
+30
+00:01:51,010 --> 00:01:54,640
+how to identify
+treatment benefit using
+
+31
+00:01:54,640 --> 00:02:00,190
+real-world data alone, even
+when no randomized trial exists.
+
+32
+00:02:00,190 --> 00:02:01,270
+Thank you.
+
+33
+00:02:01,270 --> 00:02:05,220
+And I look forward to continuing
+this journey with you.

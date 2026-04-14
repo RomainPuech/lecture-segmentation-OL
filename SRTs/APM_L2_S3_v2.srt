@@ -1,0 +1,374 @@
+1
+00:00:00,000 --> 00:00:02,360
+INSTRUCTOR: Now let's
+focus on the intuition
+
+2
+00:00:02,360 --> 00:00:08,080
+behind constructing U. We wanted
+to cover two distinct scenarios.
+
+3
+00:00:08,080 --> 00:00:11,600
+In the first scenario,
+John has a worse prognosis
+
+4
+00:00:11,600 --> 00:00:14,760
+than his neighbors,
+Mary, Peter, and Tom.
+
+5
+00:00:14,760 --> 00:00:19,440
+John's bad outcome is mostly
+explained by observed features.
+
+6
+00:00:19,440 --> 00:00:22,480
+The model already
+expected him to be
+
+7
+00:00:22,480 --> 00:00:27,000
+in higher risk than similarly
+treated patients who did well.
+
+8
+00:00:27,000 --> 00:00:30,360
+In other words, there is little
+residual unobserved burden
+
+9
+00:00:30,360 --> 00:00:31,680
+to explain.
+
+10
+00:00:31,680 --> 00:00:35,500
+In this case, we want his
+unobserved factor, U John,
+
+11
+00:00:35,500 --> 00:00:37,160
+to be low.
+
+12
+00:00:37,160 --> 00:00:40,560
+In the second scenario,
+John has better prognosis
+
+13
+00:00:40,560 --> 00:00:42,280
+than his neighbors.
+
+14
+00:00:42,280 --> 00:00:46,260
+John did worse than expected
+given his observed prognosis,
+
+15
+00:00:46,260 --> 00:00:50,600
+so his bad outcome is not
+explained by observed features.
+
+16
+00:00:50,600 --> 00:00:53,800
+That gap is precisely what
+we call unobserved prognostic
+
+17
+00:00:53,800 --> 00:00:58,060
+burden, so we want his
+unobserved factor, U John,
+
+18
+00:00:58,060 --> 00:01:00,120
+to be high.
+
+19
+00:01:00,120 --> 00:01:04,480
+Now which formula can capture
+these scenarios successfully?
+
+20
+00:01:04,480 --> 00:01:07,480
+We score everyone with a
+prognostic model trained
+
+21
+00:01:07,480 --> 00:01:09,320
+on the untreated cohort.
+
+22
+00:01:09,320 --> 00:01:12,820
+So the scores reflect
+baseline disease scores.
+
+23
+00:01:12,820 --> 00:01:16,980
+And we find John's K nearest
+treated neighbors who
+
+24
+00:01:16,980 --> 00:01:20,940
+had good outcomes, in this
+case as we said Mary, Peter,
+
+25
+00:01:20,940 --> 00:01:23,820
+and Tom, so K equals 3.
+
+26
+00:01:23,820 --> 00:01:28,660
+We compare John's predicted
+risk, P John, to the average
+
+27
+00:01:28,660 --> 00:01:31,580
+predicted risk of his neighbors.
+
+28
+00:01:31,580 --> 00:01:34,580
+The raw quantity
+that gives U John
+
+29
+00:01:34,580 --> 00:01:40,740
+is the difference between P
+John and the average baseline
+
+30
+00:01:40,740 --> 00:01:45,220
+prognosis of his neighbors,
+which we later normalize
+
+31
+00:01:45,220 --> 00:01:49,420
+into 0, 1 to get U tilde John.
+
+32
+00:01:49,420 --> 00:01:53,900
+Now how does this quantity
+satisfy our two scenarios?
+
+33
+00:01:53,900 --> 00:01:57,620
+In the first scenario,
+John has worse prognosis
+
+34
+00:01:57,620 --> 00:01:59,180
+than his neighbors.
+
+35
+00:01:59,180 --> 00:02:04,060
+If P John is lower than
+his neighbor's average,
+
+36
+00:02:04,060 --> 00:02:10,860
+then after normalization,
+U tilde John lands near 0.
+
+37
+00:02:10,860 --> 00:02:14,220
+In the second scenario,
+John has better prognosis
+
+38
+00:02:14,220 --> 00:02:15,790
+than his neighbors.
+
+39
+00:02:15,790 --> 00:02:20,030
+If P John is higher, meaning
+he looked healthier on observed
+
+40
+00:02:20,030 --> 00:02:24,230
+covariates, then U--
+
+41
+00:02:24,230 --> 00:02:28,550
+U tilde John increases
+and moves toward 1.
+
+42
+00:02:28,550 --> 00:02:31,190
+We perform the
+exact same approach
+
+43
+00:02:31,190 --> 00:02:34,530
+for all the untreated patients
+with bad outcomes, too,
+
+44
+00:02:34,530 --> 00:02:38,950
+and we again normalize
+their unobserved quantity.
+
+45
+00:02:38,950 --> 00:02:42,190
+There are a few design
+choices we need to make.
+
+46
+00:02:42,190 --> 00:02:44,350
+First are the prognostic model.
+
+47
+00:02:44,350 --> 00:02:47,590
+Linear Cox models trained
+on untreated patients
+
+48
+00:02:47,590 --> 00:02:50,990
+work well and avoid overfitting.
+
+49
+00:02:50,990 --> 00:02:52,750
+Second, the number of neighbors.
+
+50
+00:02:52,750 --> 00:02:57,710
+We avoid choosing a very small
+number of neighbors like 1
+
+51
+00:02:57,710 --> 00:02:59,550
+due to instability.
+
+52
+00:02:59,550 --> 00:03:02,870
+Values like 3 to 5
+are typically robust.
+
+53
+00:03:02,870 --> 00:03:07,470
+Empirically, road three is
+robust across reasonable choices
+
+54
+00:03:07,470 --> 00:03:10,290
+of prognostic model,
+number of neighbors,
+
+55
+00:03:10,290 --> 00:03:12,990
+and neighborhood density.
+
+56
+00:03:12,990 --> 00:03:15,930
+Once we have our
+utility quantity,
+
+57
+00:03:15,930 --> 00:03:18,710
+we do not insert it
+into the matching step.
+
+58
+00:03:18,710 --> 00:03:21,470
+It is strongly correlated
+with the outcome
+
+59
+00:03:21,470 --> 00:03:24,050
+and would distort distances.
+
+60
+00:03:24,050 --> 00:03:28,230
+Instead following the frequency
+weighting approach or row
+
+61
+00:03:28,230 --> 00:03:30,570
+weighting approach
+from road one,
+
+62
+00:03:30,570 --> 00:03:33,170
+we compute a single
+scalar weight
+
+63
+00:03:33,170 --> 00:03:36,290
+for the treated group
+with good outcomes
+
+64
+00:03:36,290 --> 00:03:40,930
+so that the weighted
+mean of U tilde
+
+65
+00:03:40,930 --> 00:03:45,690
+becomes matched between
+treated and untreated arms.
+
+66
+00:03:45,690 --> 00:03:48,770
+This is the minimal control
+that balances the latent factors
+
+67
+00:03:48,770 --> 00:03:51,490
+distribution between
+the two treatment arms
+
+68
+00:03:51,490 --> 00:03:54,530
+without overfitting
+small cohorts.
+
+69
+00:03:54,530 --> 00:03:57,930
+After waiting, we fit a
+multivariable Cox model
+
+70
+00:03:57,930 --> 00:04:01,570
+on the transformed cohort
+including treatment and baseline
+
+71
+00:04:01,570 --> 00:04:05,610
+covariates to estimate
+the final hazard ratio.
+
+72
+00:04:05,610 --> 00:04:09,570
+So to summarize, the
+three steps are we first
+
+73
+00:04:09,570 --> 00:04:12,410
+perform road one
+prognostic matching
+
+74
+00:04:12,410 --> 00:04:14,890
+to fix observed confounding.
+
+75
+00:04:14,890 --> 00:04:19,050
+Second, we compute U
+tilde and balance it
+
+76
+00:04:19,050 --> 00:04:22,210
+across treatment arms
+via scalar weight.
+
+77
+00:04:22,210 --> 00:04:25,930
+And, three, we run a Cox
+model on the balanced cohort
+
+78
+00:04:25,930 --> 00:04:28,410
+to obtain the hazard ratio.
+
+79
+00:04:28,410 --> 00:04:31,680
+That's road three end to end.

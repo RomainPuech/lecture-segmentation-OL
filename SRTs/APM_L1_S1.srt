@@ -1,0 +1,554 @@
+1
+00:00:00,000 --> 00:00:00,608
+
+
+2
+00:00:00,608 --> 00:00:01,650
+INSTRUCTOR: Good morning.
+
+3
+00:00:01,650 --> 00:00:05,370
+I'm Dr. Georgios Antonios
+Margonis, and in this lecture,
+
+4
+00:00:05,370 --> 00:00:07,890
+I'll explain how
+artificial intelligence--
+
+5
+00:00:07,890 --> 00:00:12,060
+specifically
+Interpretable AI, or IAI--
+
+6
+00:00:12,060 --> 00:00:16,100
+can help us achieve
+precision medicine.
+
+7
+00:00:16,100 --> 00:00:19,410
+Let's begin with the overview
+figure on this slide.
+
+8
+00:00:19,410 --> 00:00:24,150
+It summarizes the key concepts
+and steps we will cover today,
+
+9
+00:00:24,150 --> 00:00:26,750
+and it introduces
+the terms I will
+
+10
+00:00:26,750 --> 00:00:30,050
+be using throughout the talk.
+
+11
+00:00:30,050 --> 00:00:31,820
+We begin with the
+two main sources
+
+12
+00:00:31,820 --> 00:00:36,590
+of medical data, Randomized
+Controlled Trials, or RCTs,
+
+13
+00:00:36,590 --> 00:00:41,210
+and Real-World Data or RWD.
+
+14
+00:00:41,210 --> 00:00:44,240
+RCT data come from
+prospective studies
+
+15
+00:00:44,240 --> 00:00:47,300
+designed to compare treatments.
+
+16
+00:00:47,300 --> 00:00:51,150
+These studies are rigorous and
+provide high-quality evidence,
+
+17
+00:00:51,150 --> 00:00:54,390
+but they are also
+expensive, time-consuming,
+
+18
+00:00:54,390 --> 00:00:58,520
+and often limited by
+ethical considerations.
+
+19
+00:00:58,520 --> 00:01:03,080
+As a result, RCT data
+are relatively scarce.
+
+20
+00:01:03,080 --> 00:01:06,620
+In contrast, real-world
+data, the byproducts
+
+21
+00:01:06,620 --> 00:01:10,970
+of routine clinical care,
+are abundant and inexpensive.
+
+22
+00:01:10,970 --> 00:01:13,810
+But that abundance
+comes with a price--
+
+23
+00:01:13,810 --> 00:01:15,820
+bias.
+
+24
+00:01:15,820 --> 00:01:21,190
+RWD are often affected by
+various forms of bias that can
+
+25
+00:01:21,190 --> 00:01:24,430
+distort treatment comparisons.
+
+26
+00:01:24,430 --> 00:01:26,350
+So what are these biases?
+
+27
+00:01:26,350 --> 00:01:31,040
+There are several-- immortal
+time bias, selection bias,
+
+28
+00:01:31,040 --> 00:01:35,800
+and, most problematic,
+confounding by indication.
+
+29
+00:01:35,800 --> 00:01:38,590
+Immortal time bias
+and selection bias
+
+30
+00:01:38,590 --> 00:01:41,380
+can typically be addressed
+with appropriate study
+
+31
+00:01:41,380 --> 00:01:44,650
+design and analytic methods.
+
+32
+00:01:44,650 --> 00:01:49,370
+However, confounding, especially
+unobserved confounding,
+
+33
+00:01:49,370 --> 00:01:53,470
+is much harder to control
+for and often cannot be fully
+
+34
+00:01:53,470 --> 00:01:56,830
+addressed with current methods.
+
+35
+00:01:56,830 --> 00:01:59,890
+To illustrate confounding,
+look at the Kaplan-Meier plot
+
+36
+00:01:59,890 --> 00:02:01,810
+on the slide.
+
+37
+00:02:01,810 --> 00:02:07,570
+It shows patients with resected
+GIST, a gastrointestinal tumor.
+
+38
+00:02:07,570 --> 00:02:10,330
+The blue curve
+represents those who
+
+39
+00:02:10,330 --> 00:02:15,890
+received adjuvant imatinib, the
+red curve those who did not.
+
+40
+00:02:15,890 --> 00:02:18,890
+Paradoxically, the
+group receiving imatinib
+
+41
+00:02:18,890 --> 00:02:20,840
+appears to do worse.
+
+42
+00:02:20,840 --> 00:02:24,800
+But we know from RCTs that
+imatinib is effective.
+
+43
+00:02:24,800 --> 00:02:27,560
+This is confounding at work.
+
+44
+00:02:27,560 --> 00:02:29,810
+Patients who received
+imatinib likely
+
+45
+00:02:29,810 --> 00:02:31,710
+had more aggressive disease--
+
+46
+00:02:31,710 --> 00:02:34,490
+for example, high
+mitotic counts.
+
+47
+00:02:34,490 --> 00:02:36,960
+This made clinicians
+prescribe treatment,
+
+48
+00:02:36,960 --> 00:02:41,120
+but it also independently
+predicted poor outcomes.
+
+49
+00:02:41,120 --> 00:02:44,720
+And this is the essence of a
+confounder, a variable that
+
+50
+00:02:44,720 --> 00:02:50,390
+influences both treatment
+assignment and patient outcome.
+
+51
+00:02:50,390 --> 00:02:54,330
+When the confounder is
+recorded, such as mitotic count,
+
+52
+00:02:54,330 --> 00:02:57,800
+you can adjust for it with
+matching or regression.
+
+53
+00:02:57,800 --> 00:03:02,040
+But when confounders are
+unmeasured, or even unknown,
+
+54
+00:03:02,040 --> 00:03:05,450
+the analysis becomes risky.
+
+55
+00:03:05,450 --> 00:03:07,260
+RCTs solve this problem.
+
+56
+00:03:07,260 --> 00:03:12,020
+Randomization balances both
+known and unknown confounders
+
+57
+00:03:12,020 --> 00:03:15,230
+across treatment arms.
+
+58
+00:03:15,230 --> 00:03:17,990
+That means any
+differences in outcomes
+
+59
+00:03:17,990 --> 00:03:22,130
+can be attributed
+directly to the treatment.
+
+60
+00:03:22,130 --> 00:03:24,720
+In this lecture, I will
+walk you through how
+
+61
+00:03:24,720 --> 00:03:28,500
+we can use AI and optimization
+methods to address
+
+62
+00:03:28,500 --> 00:03:33,900
+both observed and unobserved
+confounding in RWD, making
+
+63
+00:03:33,900 --> 00:03:37,860
+it possible to generate
+causal treatment insights even
+
+64
+00:03:37,860 --> 00:03:41,310
+outside of trials.
+
+65
+00:03:41,310 --> 00:03:43,230
+Once bias is accounted for--
+
+66
+00:03:43,230 --> 00:03:45,490
+or absent, in the case of RCTs--
+
+67
+00:03:45,490 --> 00:03:49,710
+we can turn to our goal,
+precision medicine.
+
+68
+00:03:49,710 --> 00:03:52,620
+According to the National
+Cancer Institute,
+
+69
+00:03:52,620 --> 00:03:55,830
+oncologic precision
+medicine is the use
+
+70
+00:03:55,830 --> 00:03:58,800
+of specific information
+about a person's tumor
+
+71
+00:03:58,800 --> 00:04:01,440
+to help plan treatment.
+
+72
+00:04:01,440 --> 00:04:06,210
+Put simply, we want to move
+from what works best on average
+
+73
+00:04:06,210 --> 00:04:11,070
+to what works best for
+this individual patient.
+
+74
+00:04:11,070 --> 00:04:15,750
+But even when we have data
+from RCTs, or the biased RWD,
+
+75
+00:04:15,750 --> 00:04:19,110
+we don't always achieve
+precision medicine.
+
+76
+00:04:19,110 --> 00:04:22,120
+RCTs tell us what
+works on average,
+
+77
+00:04:22,120 --> 00:04:27,060
+but the average effect can
+hide important variation.
+
+78
+00:04:27,060 --> 00:04:29,890
+To move toward
+patient-specific treatment,
+
+79
+00:04:29,890 --> 00:04:32,270
+we need to uncover subgroups--
+
+80
+00:04:32,270 --> 00:04:36,290
+patients who benefit, patients
+who don't, and patients who
+
+81
+00:04:36,290 --> 00:04:39,260
+may not need treatment at all.
+
+82
+00:04:39,260 --> 00:04:44,480
+That's where
+interpretable AI comes in.
+
+83
+00:04:44,480 --> 00:04:47,100
+Using methods like
+optimal policy trees,
+
+84
+00:04:47,100 --> 00:04:49,730
+we can define
+treatment-relevant subgroups
+
+85
+00:04:49,730 --> 00:04:53,960
+in both RCT and RWD settings.
+
+86
+00:04:53,960 --> 00:04:56,430
+These trees do not
+output probabilities.
+
+87
+00:04:56,430 --> 00:05:00,200
+They output clear,
+rule-based groupings
+
+88
+00:05:00,200 --> 00:05:03,770
+based on clinical features.
+
+89
+00:05:03,770 --> 00:05:07,290
+This makes the results
+interpretable, inspectable,
+
+90
+00:05:07,290 --> 00:05:11,300
+and testable, allowing us to
+assess whether the identified
+
+91
+00:05:11,300 --> 00:05:15,230
+subgroups are
+clinically meaningful.
+
+92
+00:05:15,230 --> 00:05:17,540
+This brings us to
+the final goal,
+
+93
+00:05:17,540 --> 00:05:19,620
+illustrated in the pie chart.
+
+94
+00:05:19,620 --> 00:05:22,490
+We aim to first
+identify patients
+
+95
+00:05:22,490 --> 00:05:26,390
+who do not need treatment,
+those with good prognoses
+
+96
+00:05:26,390 --> 00:05:28,880
+who do well regardless.
+
+97
+00:05:28,880 --> 00:05:32,040
+Then, among those who
+do need treatment,
+
+98
+00:05:32,040 --> 00:05:35,870
+we distinguish between those
+who will actually benefit
+
+99
+00:05:35,870 --> 00:05:39,930
+and those who will not because
+not all high-risk patients
+
+100
+00:05:39,930 --> 00:05:42,510
+respond.
+
+101
+00:05:42,510 --> 00:05:47,370
+Now let's look at how this
+lecture is structured.
+
+102
+00:05:47,370 --> 00:05:51,600
+It will be divided
+into three parts.
+
+103
+00:05:51,600 --> 00:05:56,970
+First, I will discuss how to
+use real-world data to identify
+
+104
+00:05:56,970 --> 00:05:59,560
+patients who do not
+need treatment--
+
+105
+00:05:59,560 --> 00:06:03,840
+those with good prognoses
+who do well regardless.
+
+106
+00:06:03,840 --> 00:06:09,660
+Second, I will describe how to
+use real-world data to identify,
+
+107
+00:06:09,660 --> 00:06:12,660
+among those who do need
+treatment, who will actually
+
+108
+00:06:12,660 --> 00:06:16,680
+benefit and who will not because
+not all high-risk patients
+
+109
+00:06:16,680 --> 00:06:18,330
+respond.
+
+110
+00:06:18,330 --> 00:06:21,510
+And, finally, in part
+3, I will explain
+
+111
+00:06:21,510 --> 00:06:25,440
+how to use IAI on
+randomized trial data
+
+112
+00:06:25,440 --> 00:06:27,270
+to identify patients
+who actually
+
+113
+00:06:27,270 --> 00:06:31,230
+benefit from a treatment.
+
+114
+00:06:31,230 --> 00:06:35,130
+So let's begin with the
+first part of the lecture.
+
+115
+00:06:35,130 --> 00:06:40,200
+We will explore how to transform
+real-world data to identify
+
+116
+00:06:40,200 --> 00:06:42,640
+patients who do not
+need treatment--
+
+117
+00:06:42,640 --> 00:06:46,940
+those with good prognoses
+who do well regardless.

@@ -1,0 +1,540 @@
+1
+00:00:00,000 --> 00:00:02,080
+INSTRUCTOR: Now,
+let's look at what
+
+2
+00:00:02,080 --> 00:00:04,520
+happens on observational
+cohorts when
+
+3
+00:00:04,520 --> 00:00:08,600
+we try to recover
+the treatment effect.
+
+4
+00:00:08,600 --> 00:00:11,040
+We attempt to recover
+the hazard ratio
+
+5
+00:00:11,040 --> 00:00:14,240
+as reported in prior
+clinical trials
+
+6
+00:00:14,240 --> 00:00:16,560
+of the respective therapies.
+
+7
+00:00:16,560 --> 00:00:20,160
+The dashed red
+line in each figure
+
+8
+00:00:20,160 --> 00:00:23,280
+is the trial benchmark
+for that setting.
+
+9
+00:00:23,280 --> 00:00:28,080
+The bars show four estimators
+on the same real-world data--
+
+10
+00:00:28,080 --> 00:00:33,720
+the original naive estimate, a
+multivariable Cox adjustment,
+
+11
+00:00:33,720 --> 00:00:38,360
+prognostic matching, the
+first step only of road one,
+
+12
+00:00:38,360 --> 00:00:41,680
+and the full road
+three pipeline.
+
+13
+00:00:41,680 --> 00:00:45,820
+On the left, we can
+see the GIST data
+
+14
+00:00:45,820 --> 00:00:49,280
+set, which contains patient.
+
+15
+00:00:49,280 --> 00:00:51,680
+And for these patients,
+we need to decide
+
+16
+00:00:51,680 --> 00:00:55,120
+whether we are going to
+prescribe imatinib or just
+
+17
+00:00:55,120 --> 00:00:56,760
+observation.
+
+18
+00:00:56,760 --> 00:01:01,380
+In GIST, the RCT, the randomized
+clinical trial benchmark,
+
+19
+00:01:01,380 --> 00:01:05,290
+is around a hazard
+ratio of 0.46.
+
+20
+00:01:05,290 --> 00:01:08,210
+Starting from the raw
+cohort, the original estimate
+
+21
+00:01:08,210 --> 00:01:09,750
+is badly distorted.
+
+22
+00:01:09,750 --> 00:01:13,970
+It is well above 2, which is
+definitely the wrong direction.
+
+23
+00:01:13,970 --> 00:01:17,450
+Simply adding covariates
+in multivariable analysis
+
+24
+00:01:17,450 --> 00:01:20,610
+pulls the estimate down,
+and prognostic matching
+
+25
+00:01:20,610 --> 00:01:21,850
+helps a bit more.
+
+26
+00:01:21,850 --> 00:01:25,610
+But neither reaches
+the trial target.
+
+27
+00:01:25,610 --> 00:01:28,930
+After we add road three's
+latent burden balancing
+
+28
+00:01:28,930 --> 00:01:32,130
+on top of the prognostic
+match, the hazard ratio
+
+29
+00:01:32,130 --> 00:01:35,810
+aligns with the trial right
+around the dashed line.
+
+30
+00:01:35,810 --> 00:01:40,230
+In GIST, key prognostic features
+like size, mitotic count,
+
+31
+00:01:40,230 --> 00:01:43,210
+and tumor site carry
+a lot of signal.
+
+32
+00:01:43,210 --> 00:01:46,290
+So once we control observed
+prognoses and balance
+
+33
+00:01:46,290 --> 00:01:50,490
+the residual latent burden, the
+cohort behaves as if randomized,
+
+34
+00:01:50,490 --> 00:01:53,050
+and we recover the
+trial-like effect.
+
+35
+00:01:53,050 --> 00:01:57,610
+In the right figure, you can
+see results on the RPS cohort.
+
+36
+00:01:57,610 --> 00:02:02,770
+The RPS cohort contains patients
+with retroperitoneal sarcoma.
+
+37
+00:02:02,770 --> 00:02:06,610
+And we want to either prescribe
+preoperative radiotherapy
+
+38
+00:02:06,610 --> 00:02:08,229
+or not.
+
+39
+00:02:08,229 --> 00:02:12,990
+For this cohort, the dashed
+line, the ground truth,
+
+40
+00:02:12,990 --> 00:02:15,590
+is around 0.75.
+
+41
+00:02:15,590 --> 00:02:18,890
+The original observational
+estimate is far from that,
+
+42
+00:02:18,890 --> 00:02:21,770
+and multivariable
+analysis doesn't fix it.
+
+43
+00:02:21,770 --> 00:02:24,390
+They both remain too
+optimistic about the effect
+
+44
+00:02:24,390 --> 00:02:26,070
+of radiotherapy.
+
+45
+00:02:26,070 --> 00:02:28,930
+Prognostic matching
+improves the estimate.
+
+46
+00:02:28,930 --> 00:02:30,930
+We move towards the dashed line.
+
+47
+00:02:30,930 --> 00:02:32,830
+But there is still a gap.
+
+48
+00:02:32,830 --> 00:02:36,870
+With road three, once we balance
+the latent unobserved factor
+
+49
+00:02:36,870 --> 00:02:40,710
+across arms, the estimate
+lands near the benchmark,
+
+50
+00:02:40,710 --> 00:02:43,070
+and the error bars tighten.
+
+51
+00:02:43,070 --> 00:02:45,710
+An interesting observation
+is that our method
+
+52
+00:02:45,710 --> 00:02:48,190
+correct the treatment
+effect estimation
+
+53
+00:02:48,190 --> 00:02:52,630
+in both and over and
+underestimation scenario,
+
+54
+00:02:52,630 --> 00:02:55,110
+left and right.
+
+55
+00:02:55,110 --> 00:02:58,070
+Now, in the next set
+of results we have,
+
+56
+00:02:58,070 --> 00:03:02,870
+we start from RCTs, where we
+know the true hazard ratio.
+
+57
+00:03:02,870 --> 00:03:04,930
+These cohorts are balanced.
+
+58
+00:03:04,930 --> 00:03:08,770
+So in order to make them more
+observation-like cohorts,
+
+59
+00:03:08,770 --> 00:03:13,480
+we intentionally inject bias
+to mimic the real world.
+
+60
+00:03:13,480 --> 00:03:15,880
+We do this by
+randomly resampling
+
+61
+00:03:15,880 --> 00:03:20,640
+patients with bad outcomes and
+adding them back in the cohort.
+
+62
+00:03:20,640 --> 00:03:23,960
+That basically inflates
+poor outcomes in a way
+
+63
+00:03:23,960 --> 00:03:26,300
+that correlates with
+treatment assignment,
+
+64
+00:03:26,300 --> 00:03:31,760
+creating selection bias, like in
+observational real-life cohorts.
+
+65
+00:03:31,760 --> 00:03:35,580
+The dashed red line marks
+the true trial hazard ratio
+
+66
+00:03:35,580 --> 00:03:39,040
+before we inject bias, and
+this is the hazard ratio
+
+67
+00:03:39,040 --> 00:03:41,720
+we want to recover
+after the road three
+
+68
+00:03:41,720 --> 00:03:44,560
+pipeline is implemented.
+
+69
+00:03:44,560 --> 00:03:47,720
+So focusing on the
+left, we have STRASS.
+
+70
+00:03:47,720 --> 00:03:50,880
+STRASS is a randomized
+clinical trial
+
+71
+00:03:50,880 --> 00:03:55,340
+that was conducted on
+patients with, again,
+
+72
+00:03:55,340 --> 00:03:59,160
+primary retroperitoneal
+sarcomas, again, regarding
+
+73
+00:03:59,160 --> 00:04:01,800
+preoperative radiotherapy.
+
+74
+00:04:01,800 --> 00:04:07,760
+After injecting confounding, the
+original estimate jumps above 1.
+
+75
+00:04:07,760 --> 00:04:11,440
+Multivariable adjustment
+helps but still overshoots.
+
+76
+00:04:11,440 --> 00:04:15,290
+Prognostic matching gets
+closer but not on target.
+
+77
+00:04:15,290 --> 00:04:19,470
+With road three, after balancing
+the latent unobserved burden,
+
+78
+00:04:19,470 --> 00:04:23,090
+the estimate returns
+to approximately 1,
+
+79
+00:04:23,090 --> 00:04:26,010
+and the error bars
+tighten again.
+
+80
+00:04:26,010 --> 00:04:29,610
+Now, on the right, we
+have the BRT cohort.
+
+81
+00:04:29,610 --> 00:04:33,490
+This data set contains patients
+with extremity sarcomas.
+
+82
+00:04:33,490 --> 00:04:39,090
+The question here is also should
+they get radiotherapy or not.
+
+83
+00:04:39,090 --> 00:04:42,810
+The injected bias pushes
+original and multivariable
+
+84
+00:04:42,810 --> 00:04:46,890
+analysis toward 1, toward
+basically no effect.
+
+85
+00:04:46,890 --> 00:04:51,050
+Prognostic matching partially
+correct the treatment effect.
+
+86
+00:04:51,050 --> 00:04:55,810
+However, it is road three that
+actually pulls the estimate down
+
+87
+00:04:55,810 --> 00:05:00,490
+to approximately 0.5,
+recovering the protective signal
+
+88
+00:05:00,490 --> 00:05:02,490
+of the therapy.
+
+89
+00:05:02,490 --> 00:05:06,250
+A small gap remains because
+for this specific data set,
+
+90
+00:05:06,250 --> 00:05:08,930
+we have a smaller
+effective sample.
+
+91
+00:05:08,930 --> 00:05:14,890
+But our result is much closer
+to truth than the alternatives.
+
+92
+00:05:14,890 --> 00:05:18,610
+To summarize, road three
+builds on road one's
+
+93
+00:05:18,610 --> 00:05:21,790
+prognostic matching by
+adding a principled way
+
+94
+00:05:21,790 --> 00:05:26,190
+to quantify and balance
+unobserved prognostic factors
+
+95
+00:05:26,190 --> 00:05:30,790
+in observational survival data
+without requiring a target
+
+96
+00:05:30,790 --> 00:05:33,030
+randomized clinical trial.
+
+97
+00:05:33,030 --> 00:05:35,270
+After balancing
+this latent factor
+
+98
+00:05:35,270 --> 00:05:38,030
+and refitting a
+multivariable Cox model,
+
+99
+00:05:38,030 --> 00:05:41,270
+we obtain hazard
+ratio estimates that
+
+100
+00:05:41,270 --> 00:05:44,150
+are trial-like on
+real-world cohorts
+
+101
+00:05:44,150 --> 00:05:46,770
+and stable under
+strong stress tests,
+
+102
+00:05:46,770 --> 00:05:50,310
+as we did with randomized
+clinical trial cohorts, where,
+
+103
+00:05:50,310 --> 00:05:54,630
+as we said, we injected
+artificial confounding.
+
+104
+00:05:54,630 --> 00:05:58,550
+This is a practical path to
+credible effect estimation
+
+105
+00:05:58,550 --> 00:06:02,070
+and actionable precision
+medicine in settings where
+
+106
+00:06:02,070 --> 00:06:06,230
+trials are absent or
+incomplete, since one can now
+
+107
+00:06:06,230 --> 00:06:11,550
+use the RCT-like cohort created
+through the road three pipeline
+
+108
+00:06:11,550 --> 00:06:14,310
+train, for example,
+optimal policy trees
+
+109
+00:06:14,310 --> 00:06:17,790
+to get specific policies or
+treatment recommendations
+
+110
+00:06:17,790 --> 00:06:20,270
+for each cohort subset.
+
+111
+00:06:20,270 --> 00:06:21,870
+Thank you for
+listening, and good luck
+
+112
+00:06:21,870 --> 00:06:24,140
+with the rest of the modules.

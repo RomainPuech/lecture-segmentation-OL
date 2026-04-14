@@ -1,0 +1,34 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Editor / OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Large input/output data (mounted at runtime, not baked into image)
+decks/
+SRTs/
+output/
+results/
+
+# Git
+.git/
+.gitignore
+
+# Docs
+README.md
+*.md
+
+# Secrets (passed via env_file at runtime)
+.env
+key

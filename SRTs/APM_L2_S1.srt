@@ -1,0 +1,455 @@
+1
+00:00:00,000 --> 00:00:01,167
+INSTRUCTOR: Hello, everyone.
+
+2
+00:00:01,167 --> 00:00:03,720
+Welcome to today's lecture
+about the last part
+
+3
+00:00:03,720 --> 00:00:07,800
+of road, which aims to mitigate
+observed and unobserved
+
+4
+00:00:07,800 --> 00:00:10,920
+confounding in
+observational data.
+
+5
+00:00:10,920 --> 00:00:14,200
+You already know that
+road 1 addresses observed
+
+6
+00:00:14,200 --> 00:00:16,960
+confounding via
+prognostic matching
+
+7
+00:00:16,960 --> 00:00:19,640
+and unobserved confounding
+when the treatment
+
+8
+00:00:19,640 --> 00:00:22,160
+effect is known a priori.
+
+9
+00:00:22,160 --> 00:00:27,800
+Road 2 emulates a target RCT,
+randomized clinical trial,
+
+10
+00:00:27,800 --> 00:00:31,240
+when we have a suitable
+trial to mirror.
+
+11
+00:00:31,240 --> 00:00:34,400
+Now, today, we're going to look
+at road 3, which is designed
+
+12
+00:00:34,400 --> 00:00:36,400
+for the hardest setting.
+
+13
+00:00:36,400 --> 00:00:38,600
+We have observational data.
+
+14
+00:00:38,600 --> 00:00:42,400
+Both observed and unobserved
+confounding are present.
+
+15
+00:00:42,400 --> 00:00:45,920
+And there is no reference
+trial or prior knowledge
+
+16
+00:00:45,920 --> 00:00:49,200
+about the treatment
+effect to anchor us.
+
+17
+00:00:49,200 --> 00:00:52,960
+Our goal is to recover
+credible treatment effects
+
+18
+00:00:52,960 --> 00:00:58,720
+and enable precision medicine
+under exactly those conditions.
+
+19
+00:00:58,720 --> 00:01:01,840
+Now, let me start with
+a motivating example
+
+20
+00:01:01,840 --> 00:01:04,890
+from GIST, which stands for
+gastrointestinal intestinal
+
+21
+00:01:04,890 --> 00:01:10,210
+stromal tumor and is a type of
+cancer in the digestive tract.
+
+22
+00:01:10,210 --> 00:01:14,370
+In GIST, adjuvant
+imatinib is widely used.
+
+23
+00:01:14,370 --> 00:01:17,410
+And randomized
+clinical trial evidence
+
+24
+00:01:17,410 --> 00:01:20,810
+indicates it's highly
+effective, with a hazard
+
+25
+00:01:20,810 --> 00:01:26,330
+ratio of approximately
+0.46, well below 1.
+
+26
+00:01:26,330 --> 00:01:30,690
+As a reminder, a hazard ratio
+compares the instantaneous risk
+
+27
+00:01:30,690 --> 00:01:32,770
+of the event between groups.
+
+28
+00:01:32,770 --> 00:01:37,110
+A value below 1 indicates a
+benefit for the treated group.
+
+29
+00:01:37,110 --> 00:01:41,850
+So a hazard ratio of 0.46
+means the imatinib group
+
+30
+00:01:41,850 --> 00:01:47,490
+has about a 54% lower hazard
+of the event than observation
+
+31
+00:01:47,490 --> 00:01:49,450
+over the study period.
+
+32
+00:01:49,450 --> 00:01:51,930
+In other words, we
+know from trials
+
+33
+00:01:51,930 --> 00:01:56,130
+that imatinib
+substantially reduces risk.
+
+34
+00:01:56,130 --> 00:01:59,370
+After using the raw
+observational data,
+
+35
+00:01:59,370 --> 00:02:02,050
+we can train an
+optimal policy tree,
+
+36
+00:02:02,050 --> 00:02:05,290
+and we observe that,
+for the most patients,
+
+37
+00:02:05,290 --> 00:02:10,180
+the tree actually prescribes
+observation instead of imatinib.
+
+38
+00:02:10,180 --> 00:02:15,020
+This doesn't match our
+clinical intuition.
+
+39
+00:02:15,020 --> 00:02:17,860
+So why is there
+this mismatch when
+
+40
+00:02:17,860 --> 00:02:21,540
+we train the OPT, the
+optimal policy tree?
+
+41
+00:02:21,540 --> 00:02:23,900
+The reason lies
+in the difference
+
+42
+00:02:23,900 --> 00:02:29,020
+between randomized clinical
+trials and observational data.
+
+43
+00:02:29,020 --> 00:02:31,780
+In randomized clinical
+trials, people
+
+44
+00:02:31,780 --> 00:02:35,660
+are assigned to treatment
+groups completely randomly.
+
+45
+00:02:35,660 --> 00:02:39,020
+These randomization
+guarantees that the treated
+
+46
+00:02:39,020 --> 00:02:42,700
+and the untreated cohorts are
+similar to each other in terms
+
+47
+00:02:42,700 --> 00:02:44,820
+of their characteristics,
+and there
+
+48
+00:02:44,820 --> 00:02:48,260
+is no factor that led to the
+prescription of the treatment
+
+49
+00:02:48,260 --> 00:02:50,540
+to half of them.
+
+50
+00:02:50,540 --> 00:02:53,260
+Observational data,
+on the other hand,
+
+51
+00:02:53,260 --> 00:02:56,500
+don't have this
+randomization feature.
+
+52
+00:02:56,500 --> 00:02:59,340
+The assignment of patients
+to treatment groups
+
+53
+00:02:59,340 --> 00:03:02,540
+is driven by their
+information, which means
+
+54
+00:03:02,540 --> 00:03:05,260
+that they carry confounding.
+
+55
+00:03:05,260 --> 00:03:08,020
+There are two main
+types of confounding--
+
+56
+00:03:08,020 --> 00:03:11,980
+observed, which can be
+explained by patient differences
+
+57
+00:03:11,980 --> 00:03:15,020
+in observed features,
+like their age,
+
+58
+00:03:15,020 --> 00:03:19,200
+their size of a tumor they might
+have, their sex, et cetera.
+
+59
+00:03:19,200 --> 00:03:21,360
+There are many
+approaches in literature
+
+60
+00:03:21,360 --> 00:03:24,360
+that aim to mitigate
+observed confounding,
+
+61
+00:03:24,360 --> 00:03:29,400
+like covariate adjustment,
+propensity matching, propensity
+
+62
+00:03:29,400 --> 00:03:32,080
+weighting, and others.
+
+63
+00:03:32,080 --> 00:03:35,640
+The second type of
+confounding is unobserved
+
+64
+00:03:35,640 --> 00:03:39,480
+and is due to drivers of
+prognosis and treatment choice
+
+65
+00:03:39,480 --> 00:03:43,720
+that we don't know about, like,
+for example, mutations that
+
+66
+00:03:43,720 --> 00:03:46,400
+can affect patient
+outcomes, but they might not
+
+67
+00:03:46,400 --> 00:03:49,280
+be known during the
+treatment assignment.
+
+68
+00:03:49,280 --> 00:03:52,160
+Existing methods in
+literature generally
+
+69
+00:03:52,160 --> 00:03:55,840
+operate under the assumption
+that unobserved confounding
+
+70
+00:03:55,840 --> 00:03:57,320
+does not exist.
+
+71
+00:03:57,320 --> 00:04:01,400
+So they usually try to validate
+this assumption in their data
+
+72
+00:04:01,400 --> 00:04:04,880
+and then ignore it
+in their analysis.
+
+73
+00:04:04,880 --> 00:04:09,000
+That is the central
+point road 3 addresses.
+
+74
+00:04:09,000 --> 00:04:11,440
+Can we de-bias
+observational cohorts
+
+75
+00:04:11,440 --> 00:04:16,680
+sufficiently to get rid of
+both types of confounding?
+
+76
+00:04:16,680 --> 00:04:20,089
+In the previous lectures, as
+we briefly mentioned earlier,
+
+77
+00:04:20,089 --> 00:04:23,330
+you explored road 1 and road 2.
+
+78
+00:04:23,330 --> 00:04:26,250
+As a quick recap,
+road 1 addresses
+
+79
+00:04:26,250 --> 00:04:30,810
+observed confounding by matching
+on prognosis and normalized
+
+80
+00:04:30,810 --> 00:04:35,430
+features and, when an
+external effect size is known,
+
+81
+00:04:35,430 --> 00:04:39,490
+can adjust for residual
+unobserved confounding via row
+
+82
+00:04:39,490 --> 00:04:41,050
+weighting.
+
+83
+00:04:41,050 --> 00:04:44,610
+However, it does not
+generalize to cohorts
+
+84
+00:04:44,610 --> 00:04:48,290
+where the treatment
+effect is unknown.
+
+85
+00:04:48,290 --> 00:04:52,730
+Road 2, on the other hand,
+builds on road 1's toolkit
+
+86
+00:04:52,730 --> 00:04:55,690
+to emulate a specific trial.
+
+87
+00:04:55,690 --> 00:04:58,770
+It works well when
+a suitable target
+
+88
+00:04:58,770 --> 00:05:01,970
+RCT, randomized
+clinical trial, exists.
+
+89
+00:05:01,970 --> 00:05:06,730
+But it does not apply when
+no trial anchor is available.
+
+90
+00:05:06,730 --> 00:05:09,490
+This leaves us with
+the key question--
+
+91
+00:05:09,490 --> 00:05:12,370
+how do we estimate
+treatment effects
+
+92
+00:05:12,370 --> 00:05:16,690
+and then perform precision
+medicine with observational data
+
+93
+00:05:16,690 --> 00:05:20,530
+without a trial anchor when
+both observed and unobserved
+
+94
+00:05:20,530 --> 00:05:23,080
+confounding are present?

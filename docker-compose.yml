@@ -1,0 +1,20 @@
+services:
+  segmenter:
+    build: .
+    ports:
+      - "8000:8000"
+
+    # Pass the Anthropic API key from .env into the container
+    env_file:
+      - .env
+
+    # Mount the user's home directory at the same path inside the container
+    # so that paths shown in the file browser are identical on host and container.
+    volumes:
+      - ${HOME}:${HOME}:rw
+
+    # Make the container aware of the host home path
+    environment:
+      - HOST_HOME=${HOME}
+
+    restart: unless-stopped

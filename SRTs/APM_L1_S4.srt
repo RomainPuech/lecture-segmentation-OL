@@ -1,0 +1,825 @@
+1
+00:00:00,000 --> 00:00:02,520
+INSTRUCTOR: In this final
+part of the lecture,
+
+2
+00:00:02,520 --> 00:00:07,160
+our goal is to identify patients
+who benefit from treatment,
+
+3
+00:00:07,160 --> 00:00:11,840
+but now using interpretable
+AI applied directly
+
+4
+00:00:11,840 --> 00:00:15,400
+to randomized trial data.
+
+5
+00:00:15,400 --> 00:00:17,840
+This might seem to
+contradict the implications
+
+6
+00:00:17,840 --> 00:00:22,880
+of row two, where we emphasized
+the power and flexibility
+
+7
+00:00:22,880 --> 00:00:26,000
+of using real-world data.
+
+8
+00:00:26,000 --> 00:00:29,080
+So why return to RCTs now?
+
+9
+00:00:29,080 --> 00:00:32,299
+Because we need to directly
+compare our method,
+
+10
+00:00:32,299 --> 00:00:35,760
+optimal policy trees, to
+the current gold standard
+
+11
+00:00:35,760 --> 00:00:38,400
+for subgroup discovery in RCTs.
+
+12
+00:00:38,400 --> 00:00:42,960
+The one variable at a
+time subgroup analysis.
+
+13
+00:00:42,960 --> 00:00:44,760
+This is the
+conventional approach
+
+14
+00:00:44,760 --> 00:00:48,320
+where researchers stratify
+the RCT population
+
+15
+00:00:48,320 --> 00:00:53,400
+by individual variables, like
+tumor size, age, or biomarker
+
+16
+00:00:53,400 --> 00:00:58,160
+status, and test whether
+the treatment effect differs
+
+17
+00:00:58,160 --> 00:01:00,320
+across strata.
+
+18
+00:01:00,320 --> 00:01:05,099
+But as we will see next, this
+approach has major limitations.
+
+19
+00:01:05,099 --> 00:01:09,850
+And that's where the power of
+interpretable AI really shines.
+
+20
+00:01:09,850 --> 00:01:12,900
+
+
+21
+00:01:12,900 --> 00:01:17,660
+Let's pause here to contrast the
+two approaches, optimal policy
+
+22
+00:01:17,660 --> 00:01:22,860
+trees versus conventional
+subgroup analysis.
+
+23
+00:01:22,860 --> 00:01:26,260
+A few words on the
+conventional approach.
+
+24
+00:01:26,260 --> 00:01:31,780
+These analyses stratify patients
+based on one variable at a time,
+
+25
+00:01:31,780 --> 00:01:36,300
+say, tumor location,
+histologic subtype, or age.
+
+26
+00:01:36,300 --> 00:01:41,100
+Then they compare treatment
+effects within those strata.
+
+27
+00:01:41,100 --> 00:01:45,340
+For example, older
+versus younger patients.
+
+28
+00:01:45,340 --> 00:01:47,540
+But here is the issue.
+
+29
+00:01:47,540 --> 00:01:50,940
+Patients don't differ
+based on one factor only.
+
+30
+00:01:50,940 --> 00:01:53,460
+They differ across many.
+
+31
+00:01:53,460 --> 00:01:56,420
+In addition, when you
+test multiple variables
+
+32
+00:01:56,420 --> 00:01:59,700
+independently, you run
+into the classic problem
+
+33
+00:01:59,700 --> 00:02:02,940
+of multiple hypothesis
+testing, which
+
+34
+00:02:02,940 --> 00:02:08,270
+inflates the risk of
+spurious positive findings.
+
+35
+00:02:08,270 --> 00:02:10,830
+In contrast,
+optimal policy trees
+
+36
+00:02:10,830 --> 00:02:13,270
+do something very different.
+
+37
+00:02:13,270 --> 00:02:16,870
+They begin by predicting
+each patient's outcome
+
+38
+00:02:16,870 --> 00:02:19,190
+under both treatment scenarios.
+
+39
+00:02:19,190 --> 00:02:21,830
+For example,
+recurrence-free survival
+
+40
+00:02:21,830 --> 00:02:25,150
+with and without radiotherapy.
+
+41
+00:02:25,150 --> 00:02:29,270
+These predictions are based
+on all available covariates
+
+42
+00:02:29,270 --> 00:02:33,270
+in a counterfactual
+model, not just one.
+
+43
+00:02:33,270 --> 00:02:36,870
+Then, these predictions are
+used to train a decision
+
+44
+00:02:36,870 --> 00:02:42,430
+tree that groups patients based
+on similar treatment benefit,
+
+45
+00:02:42,430 --> 00:02:45,150
+or lack thereof.
+
+46
+00:02:45,150 --> 00:02:49,870
+What is powerful here is that
+OPTs can identify combinations
+
+47
+00:02:49,870 --> 00:02:53,750
+of clinical features that
+drive benefit, rather than just
+
+48
+00:02:53,750 --> 00:02:55,620
+flagging a single variable.
+
+49
+00:02:55,620 --> 00:02:58,830
+
+
+50
+00:02:58,830 --> 00:03:02,630
+To compare the performance of
+conventional subgroup analysis
+
+51
+00:03:02,630 --> 00:03:05,870
+and optimal policy
+trees, let me walk you
+
+52
+00:03:05,870 --> 00:03:08,310
+through a clinical example.
+
+53
+00:03:08,310 --> 00:03:14,290
+We're looking at retroperitoneal
+sarcoma, RPS, a rare cancer
+
+54
+00:03:14,290 --> 00:03:20,890
+that accounts for about 15%
+of all soft tissue sarcomas.
+
+55
+00:03:20,890 --> 00:03:23,810
+The primary
+treatment is surgery,
+
+56
+00:03:23,810 --> 00:03:26,290
+but there is
+ongoing debate about
+
+57
+00:03:26,290 --> 00:03:32,610
+whether preoperative radiation
+therapy, or RT, should be added.
+
+58
+00:03:32,610 --> 00:03:39,810
+Because RPS is so rare, no RCT
+had been conducted for decades.
+
+59
+00:03:39,810 --> 00:03:46,170
+So for years, investigators
+relied on real-world data.
+
+60
+00:03:46,170 --> 00:03:50,130
+One highly cited RWD study,
+published in The Lancet
+
+61
+00:03:50,130 --> 00:03:53,530
+Oncology, used
+propensity score matching
+
+62
+00:03:53,530 --> 00:03:56,330
+and other rigorous methods.
+
+63
+00:03:56,330 --> 00:04:00,610
+They found a strong
+association between RT
+
+64
+00:04:00,610 --> 00:04:05,330
+and improved recurrence-free
+and overall survival.
+
+65
+00:04:05,330 --> 00:04:10,690
+But in 2020, the STRASS
+trial, the first and only RCT
+
+66
+00:04:10,690 --> 00:04:13,130
+in this setting, was published.
+
+67
+00:04:13,130 --> 00:04:18,500
+It found no benefit
+from adding radiation.
+
+68
+00:04:18,500 --> 00:04:22,540
+The discrepancy between the
+RWD and the RCT findings
+
+69
+00:04:22,540 --> 00:04:26,500
+raised a fundamental issue
+we have mentioned before.
+
+70
+00:04:26,500 --> 00:04:30,660
+Even with the best methods,
+observational studies cannot
+
+71
+00:04:30,660 --> 00:04:34,740
+fully address
+unobserved confounding.
+
+72
+00:04:34,740 --> 00:04:37,460
+That, along with
+possible differences
+
+73
+00:04:37,460 --> 00:04:41,620
+in inclusion criteria, likely
+explains the conflicting
+
+74
+00:04:41,620 --> 00:04:43,220
+results.
+
+75
+00:04:43,220 --> 00:04:45,270
+Back to STRASS.
+
+76
+00:04:45,270 --> 00:04:48,900
+In an attempt to find
+treatment-responsive subgroups
+
+77
+00:04:48,900 --> 00:04:52,780
+in this overall negative
+trial, the investigators
+
+78
+00:04:52,780 --> 00:04:55,140
+performed conventional
+one variable
+
+79
+00:04:55,140 --> 00:04:58,580
+at a time subgroup analysis.
+
+80
+00:04:58,580 --> 00:05:03,180
+They reported benefit in
+certain histologic subtypes,
+
+81
+00:05:03,180 --> 00:05:07,500
+but these results were
+immediately challenged.
+
+82
+00:05:07,500 --> 00:05:12,300
+Letters to the editor pointed
+out the risk of false positives
+
+83
+00:05:12,300 --> 00:05:14,900
+due to multiple testing.
+
+84
+00:05:14,900 --> 00:05:19,440
+Others cited these subgroup
+results as a justification
+
+85
+00:05:19,440 --> 00:05:22,440
+to use RT in clinical practice.
+
+86
+00:05:22,440 --> 00:05:24,310
+The debate turned chaotic.
+
+87
+00:05:24,310 --> 00:05:27,440
+
+
+88
+00:05:27,440 --> 00:05:30,200
+We applied optimal
+policy trees directly
+
+89
+00:05:30,200 --> 00:05:33,880
+within the STRASS RCT data set.
+
+90
+00:05:33,880 --> 00:05:37,000
+So unlike in previous
+parts of this lecture,
+
+91
+00:05:37,000 --> 00:05:39,080
+nothing confounding was needed.
+
+92
+00:05:39,080 --> 00:05:42,320
+This was randomized data.
+
+93
+00:05:42,320 --> 00:05:44,880
+But here is what is interesting.
+
+94
+00:05:44,880 --> 00:05:48,280
+Our findings did not
+align with the results
+
+95
+00:05:48,280 --> 00:05:52,440
+of the conventional
+subgroup analysis.
+
+96
+00:05:52,440 --> 00:05:57,480
+The conventional analysis, shown
+on the left side of the slide,
+
+97
+00:05:57,480 --> 00:06:01,680
+claimed that all
+well-differentiated and all
+
+98
+00:06:01,680 --> 00:06:07,240
+the differentiated patients
+benefited from radiation.
+
+99
+00:06:07,240 --> 00:06:11,040
+However, even in
+their own forest plot,
+
+100
+00:06:11,040 --> 00:06:15,240
+these findings were not
+statistically significant.
+
+101
+00:06:15,240 --> 00:06:17,840
+The confidence intervals
+for the hazard ratios
+
+102
+00:06:17,840 --> 00:06:21,720
+extended beyond one.
+
+103
+00:06:21,720 --> 00:06:24,900
+In contrast, the
+OPT approach, shown
+
+104
+00:06:24,900 --> 00:06:27,780
+on the right side of
+the slide, revealed
+
+105
+00:06:27,780 --> 00:06:32,644
+a much more nuanced and
+biologically plausible story.
+
+106
+00:06:32,644 --> 00:06:37,620
+Among the differentiated
+liposarcoma patients, only those
+
+107
+00:06:37,620 --> 00:06:42,420
+without R2 rejections, meaning
+complete or near-complete tumor
+
+108
+00:06:42,420 --> 00:06:47,260
+removal, actually
+benefited from radiation.
+
+109
+00:06:47,260 --> 00:06:51,300
+Among well-differentiated
+liposarcoma patients,
+
+110
+00:06:51,300 --> 00:06:54,220
+benefit was seen only
+in those under 60 years
+
+111
+00:06:54,220 --> 00:06:58,260
+old, which is a well-known
+subset with worse baseline
+
+112
+00:06:58,260 --> 00:07:01,580
+prognosis.
+
+113
+00:07:01,580 --> 00:07:04,940
+Let's now look at the validation
+of the conventional analysis
+
+114
+00:07:04,940 --> 00:07:07,940
+on the left side of the slide
+and compare the findings
+
+115
+00:07:07,940 --> 00:07:10,540
+on the right side of
+the slide internally
+
+116
+00:07:10,540 --> 00:07:13,940
+using Kaplan-Meier plots.
+
+117
+00:07:13,940 --> 00:07:17,820
+The conventional analysis
+on the upper left
+
+118
+00:07:17,820 --> 00:07:22,460
+examined all well-differentiated
+patients as a whole.
+
+119
+00:07:22,460 --> 00:07:25,020
+But as shown in the
+Kaplan-Meier plots,
+
+120
+00:07:25,020 --> 00:07:28,510
+there was no statistically
+significant benefit.
+
+121
+00:07:28,510 --> 00:07:33,230
+In contrast, the OPT
+analysis on the upper right
+
+122
+00:07:33,230 --> 00:07:36,510
+identified a more
+refined subgroup,
+
+123
+00:07:36,510 --> 00:07:40,710
+well-differentiated
+patients under age 60.
+
+124
+00:07:40,710 --> 00:07:42,950
+And within this
+group, we observed
+
+125
+00:07:42,950 --> 00:07:47,630
+a statistically significant
+benefit from radiation.
+
+126
+00:07:47,630 --> 00:07:50,510
+This is important, not
+only because it validates
+
+127
+00:07:50,510 --> 00:07:53,910
+successfully the OPT method,
+but it's also interesting
+
+128
+00:07:53,910 --> 00:07:58,190
+because of how the
+OPTs identify benefit.
+
+129
+00:07:58,190 --> 00:08:00,670
+In this case, benefit
+is driven not only
+
+130
+00:08:00,670 --> 00:08:06,030
+by better response to treatment,
+but by higher baseline risk.
+
+131
+00:08:06,030 --> 00:08:09,070
+Specifically, these
+younger patients
+
+132
+00:08:09,070 --> 00:08:12,310
+had higher baseline
+recurrence risk.
+
+133
+00:08:12,310 --> 00:08:15,390
+So even if the relative
+treatment effect
+
+134
+00:08:15,390 --> 00:08:20,310
+was relatively similar, they
+gained more in absolute terms.
+
+135
+00:08:20,310 --> 00:08:24,910
+That's absolute risk
+reduction in action.
+
+136
+00:08:24,910 --> 00:08:28,310
+In other cases, the
+benefit, or lack of it,
+
+137
+00:08:28,310 --> 00:08:31,890
+has nothing to do
+with baseline risk.
+
+138
+00:08:31,890 --> 00:08:36,890
+It's about whether the patient
+is able to respond to treatment.
+
+139
+00:08:36,890 --> 00:08:41,169
+For example, as shown in the
+lower left side of the figure,
+
+140
+00:08:41,169 --> 00:08:45,410
+the differentiated RPS
+patients with R2 rejections
+
+141
+00:08:45,410 --> 00:08:48,290
+derived no benefit
+from radiation.
+
+142
+00:08:48,290 --> 00:08:49,770
+Why?
+
+143
+00:08:49,770 --> 00:08:52,510
+Because the tumor was
+not completely removed,
+
+144
+00:08:52,510 --> 00:08:56,210
+so radiation
+couldn't do its job.
+
+145
+00:08:56,210 --> 00:08:58,930
+This is a classic case
+of a treatment effect
+
+146
+00:08:58,930 --> 00:09:05,290
+modifier, a factor that changes
+the relative benefit of therapy.
+
+147
+00:09:05,290 --> 00:09:08,530
+Look now and compare the
+Kaplan-Meier plots on the lower
+
+148
+00:09:08,530 --> 00:09:11,130
+left and right side.
+
+149
+00:09:11,130 --> 00:09:15,650
+Baseline prognosis is
+similar, but the vertical gap
+
+150
+00:09:15,650 --> 00:09:19,330
+between curves differs
+because the relative risk
+
+151
+00:09:19,330 --> 00:09:22,610
+reduction is greater
+when we exclude patients
+
+152
+00:09:22,610 --> 00:09:26,690
+with R2 resection.
+
+153
+00:09:26,690 --> 00:09:31,050
+So why do optimal policy trees
+outperform conventional subgroup
+
+154
+00:09:31,050 --> 00:09:32,650
+analysis?
+
+155
+00:09:32,650 --> 00:09:35,340
+I believe the
+reason is intuitive.
+
+156
+00:09:35,340 --> 00:09:39,740
+Conventional subgroup analysis
+looks at one factor at a time,
+
+157
+00:09:39,740 --> 00:09:42,260
+like histologic subtype or age.
+
+158
+00:09:42,260 --> 00:09:45,340
+But in reality, patients
+differ across a constellation
+
+159
+00:09:45,340 --> 00:09:48,740
+of clinical features,
+not just one.
+
+160
+00:09:48,740 --> 00:09:50,220
+And that's where OPTs.
+
+161
+00:09:50,220 --> 00:09:51,900
+excel.
+
+162
+00:09:51,900 --> 00:09:55,500
+They integrate multiple
+variables simultaneously,
+
+163
+00:09:55,500 --> 00:09:59,300
+allowing the algorithm to
+triangulate more precisely
+
+164
+00:09:59,300 --> 00:10:03,820
+which combinations of features
+define subgroups with varying
+
+165
+00:10:03,820 --> 00:10:07,300
+treatment response or benefit.
+
+166
+00:10:07,300 --> 00:10:11,020
+This multidimensional approach
+reflects the complexity
+
+167
+00:10:11,020 --> 00:10:15,060
+of real patients and leads
+to more accurate, clinically
+
+168
+00:10:15,060 --> 00:10:18,980
+meaningful subgroup
+identification.
+
+169
+00:10:18,980 --> 00:10:23,820
+And perhaps just as important,
+the method is objective.
+
+170
+00:10:23,820 --> 00:10:27,020
+OPTs do not rely on
+manually selecting
+
+171
+00:10:27,020 --> 00:10:31,140
+variable combinations or
+arbitrary cutoff points.
+
+172
+00:10:31,140 --> 00:10:34,380
+They let the data drive
+the structure, guided
+
+173
+00:10:34,380 --> 00:10:38,130
+by interpretable
+rule-based learning.

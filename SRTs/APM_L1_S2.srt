@@ -1,0 +1,1061 @@
+1
+00:00:00,000 --> 00:00:04,850
+INSTRUCTOR: So let's begin with
+the first part of the lecture.
+
+2
+00:00:04,850 --> 00:00:09,320
+To illustrate the methodology,
+we will use a clinical example.
+
+3
+00:00:09,320 --> 00:00:11,540
+The efficacy of
+adjuvant imatinib
+
+4
+00:00:11,540 --> 00:00:15,140
+for patients with localized
+GIST was established
+
+5
+00:00:15,140 --> 00:00:18,020
+in the first imatinib
+versus placebo trial, which
+
+6
+00:00:18,020 --> 00:00:21,140
+used broad inclusion criteria.
+
+7
+00:00:21,140 --> 00:00:23,930
+That means the trial
+included patients
+
+8
+00:00:23,930 --> 00:00:26,790
+with even relatively
+low risk of recurrence,
+
+9
+00:00:26,790 --> 00:00:30,650
+the outcome imatinib
+was designed to prevent.
+
+10
+00:00:30,650 --> 00:00:34,190
+The trial showed a clear benefit
+of treating resected GIST
+
+11
+00:00:34,190 --> 00:00:36,620
+patients with imatinib.
+
+12
+00:00:36,620 --> 00:00:40,670
+As a result, current selection
+guidelines are liberal.
+
+13
+00:00:40,670 --> 00:00:44,070
+Many patients, including
+those with intermediate risk,
+
+14
+00:00:44,070 --> 00:00:46,250
+receive treatment.
+
+15
+00:00:46,250 --> 00:00:49,130
+This likely leads
+to overtreatment.
+
+16
+00:00:49,130 --> 00:00:52,700
+However, conducting a new
+placebo-controlled RCT
+
+17
+00:00:52,700 --> 00:00:56,430
+in lower-risk patients
+is no longer ethical,
+
+18
+00:00:56,430 --> 00:00:59,610
+as that would mean
+withholding an established,
+
+19
+00:00:59,610 --> 00:01:02,810
+effective treatment from
+half of the participants.
+
+20
+00:01:02,810 --> 00:01:07,140
+If we are wrong and imatinib is
+still needed for some of them,
+
+21
+00:01:07,140 --> 00:01:09,500
+we could be exposing
+those patients
+
+22
+00:01:09,500 --> 00:01:11,610
+to avoidable recurrence.
+
+23
+00:01:11,610 --> 00:01:15,200
+This kind of experiment
+would be unethical.
+
+24
+00:01:15,200 --> 00:01:19,590
+And, indeed, 25 years after
+the original imatinib trial,
+
+25
+00:01:19,590 --> 00:01:23,750
+no second placebo arm
+study has been done.
+
+26
+00:01:23,750 --> 00:01:26,300
+So the question
+remains, How can we
+
+27
+00:01:26,300 --> 00:01:31,430
+identify patients who do
+not need adjuvant imatinib?
+
+28
+00:01:31,430 --> 00:01:36,200
+What we will discuss here is
+how to transform real-world data
+
+29
+00:01:36,200 --> 00:01:39,860
+to make it suitable for
+identifying patients who do not
+
+30
+00:01:39,860 --> 00:01:43,100
+need adjuvant imatinib.
+
+31
+00:01:43,100 --> 00:01:46,050
+Let's start with the top
+left Kaplan-Meier plot,
+
+32
+00:01:46,050 --> 00:01:48,200
+which you have already seen.
+
+33
+00:01:48,200 --> 00:01:50,660
+It shows the
+recurrence-free survival
+
+34
+00:01:50,660 --> 00:01:53,360
+of patients with
+resected GIST based
+
+35
+00:01:53,360 --> 00:01:56,300
+on whether they
+received imatinib.
+
+36
+00:01:56,300 --> 00:01:59,090
+Counterintuitively, patients
+who received imatinib
+
+37
+00:01:59,090 --> 00:02:00,710
+appear to do worse.
+
+38
+00:02:00,710 --> 00:02:04,440
+That's a classic example of
+confounding by indication.
+
+39
+00:02:04,440 --> 00:02:07,970
+Those patients were more likely
+to be treated because they had
+
+40
+00:02:07,970 --> 00:02:11,531
+worse prognosis to begin with.
+
+41
+00:02:11,531 --> 00:02:15,230
+To the right of this plot, I've
+included the Kaplan-Meier curve
+
+42
+00:02:15,230 --> 00:02:20,120
+from the original RCT comparing
+imatinib versus placebo.
+
+43
+00:02:20,120 --> 00:02:23,810
+As you can see, imatinib,
+the curve with a solid line,
+
+44
+00:02:23,810 --> 00:02:25,230
+was highly effective.
+
+45
+00:02:25,230 --> 00:02:27,720
+It cut the recurrence
+risk dramatically,
+
+46
+00:02:27,720 --> 00:02:30,110
+at least for the
+first three years.
+
+47
+00:02:30,110 --> 00:02:33,350
+This is what the real-world
+Kaplan-Meier curve
+
+48
+00:02:33,350 --> 00:02:38,300
+should look like if
+confounding were removed.
+
+49
+00:02:38,300 --> 00:02:41,450
+Now look at the
+bottom left panel.
+
+50
+00:02:41,450 --> 00:02:44,960
+Here, we show the distribution
+of baseline recurrence
+
+51
+00:02:44,960 --> 00:02:49,550
+risk across our original
+real-world cohort.
+
+52
+00:02:49,550 --> 00:02:52,130
+Baseline risk refers to
+the risk of recurrence
+
+53
+00:02:52,130 --> 00:02:54,740
+if no treatment is given.
+
+54
+00:02:54,740 --> 00:02:57,950
+To estimate this, we trained
+the prognostic model only
+
+55
+00:02:57,950 --> 00:03:02,310
+on untreated patients and then
+applied it to both groups,
+
+56
+00:03:02,310 --> 00:03:04,620
+including patients
+treated with imatinib,
+
+57
+00:03:04,620 --> 00:03:09,020
+to estimate their
+counterfactual baseline risk.
+
+58
+00:03:09,020 --> 00:03:11,820
+This is a classic
+counterfactual approach.
+
+59
+00:03:11,820 --> 00:03:17,060
+We ask, What would have happened
+if this treated patient had not
+
+60
+00:03:17,060 --> 00:03:19,160
+been treated?
+
+61
+00:03:19,160 --> 00:03:21,240
+Focus on the bar heights.
+
+62
+00:03:21,240 --> 00:03:24,560
+You will see that patients
+who received imatinib
+
+63
+00:03:24,560 --> 00:03:27,630
+tend to fall into
+higher-risk categories,
+
+64
+00:03:27,630 --> 00:03:32,160
+while those who didn't fall
+into lower-risk categories.
+
+65
+00:03:32,160 --> 00:03:33,680
+This makes sense.
+
+66
+00:03:33,680 --> 00:03:38,390
+Clinicians base their treatment
+decisions on baseline risk.
+
+67
+00:03:38,390 --> 00:03:40,340
+We still have many
+high-risk patients
+
+68
+00:03:40,340 --> 00:03:41,820
+who didn't receive imatinib.
+
+69
+00:03:41,820 --> 00:03:45,320
+This may be from the
+preimatinib era or patients
+
+70
+00:03:45,320 --> 00:03:48,140
+who declined treatment.
+
+71
+00:03:48,140 --> 00:03:51,050
+This is an example of
+observed confounding,
+
+72
+00:03:51,050 --> 00:03:53,600
+as we were able to
+measure it by training
+
+73
+00:03:53,600 --> 00:03:56,060
+the counterfactual
+baseline risk model using
+
+74
+00:03:56,060 --> 00:03:59,270
+known prognostic variables.
+
+75
+00:03:59,270 --> 00:04:02,220
+To address this
+observed confounding,
+
+76
+00:04:02,220 --> 00:04:05,090
+we apply prognostic matching.
+
+77
+00:04:05,090 --> 00:04:08,870
+This isn't ordinary matching
+on single variables.
+
+78
+00:04:08,870 --> 00:04:13,310
+Instead, we match patients
+within groups that share
+
+79
+00:04:13,310 --> 00:04:16,040
+a similar baseline
+prognosis estimated
+
+80
+00:04:16,040 --> 00:04:18,260
+from the counterfactual model.
+
+81
+00:04:18,260 --> 00:04:22,670
+This safeguard ensures we
+are matching only patients
+
+82
+00:04:22,670 --> 00:04:28,010
+with similar expected outcomes
+had they not been treated.
+
+83
+00:04:28,010 --> 00:04:30,410
+The matching
+optimization algorithm
+
+84
+00:04:30,410 --> 00:04:35,120
+is shown below the
+RCT Kaplan-Meier plot.
+
+85
+00:04:35,120 --> 00:04:38,600
+Now look at the
+bottom right panel.
+
+86
+00:04:38,600 --> 00:04:41,840
+After matching, the treated
+and untreated patients
+
+87
+00:04:41,840 --> 00:04:45,890
+are well balanced across
+all baseline risk buckets.
+
+88
+00:04:45,890 --> 00:04:50,510
+This is a visual check
+that our matching worked.
+
+89
+00:04:50,510 --> 00:04:53,360
+At the top right, you see
+the new Kaplan-Meier plot
+
+90
+00:04:53,360 --> 00:04:56,240
+using only the matched cohort.
+
+91
+00:04:56,240 --> 00:04:58,490
+Compare it to the original.
+
+92
+00:04:58,490 --> 00:05:01,710
+The curves are now
+nearly overlapping.
+
+93
+00:05:01,710 --> 00:05:05,540
+There is no longer a large
+difference in outcomes.
+
+94
+00:05:05,540 --> 00:05:10,310
+This is very different from
+what we saw before matching.
+
+95
+00:05:10,310 --> 00:05:14,690
+But also, notice this still
+doesn't look like the RCT result
+
+96
+00:05:14,690 --> 00:05:17,090
+in the center of the figure.
+
+97
+00:05:17,090 --> 00:05:19,580
+Imatinib showed a clear
+benefit in the trial,
+
+98
+00:05:19,580 --> 00:05:22,110
+and we still don't
+see that here.
+
+99
+00:05:22,110 --> 00:05:26,030
+So while we have addressed
+observed confounding,
+
+100
+00:05:26,030 --> 00:05:30,920
+this shows that unobserved
+confounding likely remains.
+
+101
+00:05:30,920 --> 00:05:36,860
+And that brings us to step
+2, which we will cover next.
+
+102
+00:05:36,860 --> 00:05:39,650
+In step 2, we aim
+to do something
+
+103
+00:05:39,650 --> 00:05:41,930
+that, to our
+knowledge, has not been
+
+104
+00:05:41,930 --> 00:05:44,450
+done before in this setting.
+
+105
+00:05:44,450 --> 00:05:47,840
+We aim to address unobserved
+confounding, which,
+
+106
+00:05:47,840 --> 00:05:51,200
+by definition, cannot be
+corrected directly through
+
+107
+00:05:51,200 --> 00:05:54,990
+matching or regression, since
+you cannot adjust for something
+
+108
+00:05:54,990 --> 00:05:57,320
+you cannot observe.
+
+109
+00:05:57,320 --> 00:06:00,920
+Instead, we focus on correcting
+the effect of unobserved
+
+110
+00:06:00,920 --> 00:06:04,410
+confounders, which,
+as we saw in step 1,
+
+111
+00:06:04,410 --> 00:06:06,960
+is that, even after
+prognostic matching,
+
+112
+00:06:06,960 --> 00:06:10,820
+the Kaplan-Meier curve still
+suggests no apparent benefit
+
+113
+00:06:10,820 --> 00:06:12,590
+from imatinib.
+
+114
+00:06:12,590 --> 00:06:14,850
+That's not because
+the drug doesn't work.
+
+115
+00:06:14,850 --> 00:06:17,720
+It's because unobserved
+confounding continues
+
+116
+00:06:17,720 --> 00:06:20,690
+to distort the signal.
+
+117
+00:06:20,690 --> 00:06:23,160
+To overcome this,
+we use a novel idea.
+
+118
+00:06:23,160 --> 00:06:27,470
+We artificially amplify the
+observed effect of imatinib
+
+119
+00:06:27,470 --> 00:06:30,650
+to counteract the
+downward bias caused
+
+120
+00:06:30,650 --> 00:06:33,740
+by unobserved confounding.
+
+121
+00:06:33,740 --> 00:06:35,720
+How do we do that?
+
+122
+00:06:35,720 --> 00:06:38,210
+We increase the influence
+of treated patients
+
+123
+00:06:38,210 --> 00:06:41,900
+with good outcomes, those who
+received imatinib and did not
+
+124
+00:06:41,900 --> 00:06:46,910
+recur, by assigning them greater
+weights during model training.
+
+125
+00:06:46,910 --> 00:06:50,270
+The model will then try
+to make better predictions
+
+126
+00:06:50,270 --> 00:06:52,560
+for the patients
+with a larger weight
+
+127
+00:06:52,560 --> 00:06:55,580
+since this yields a greater
+improvement in the loss
+
+128
+00:06:55,580 --> 00:06:57,110
+function.
+
+129
+00:06:57,110 --> 00:06:59,270
+In turn, this will
+improve predictions
+
+130
+00:06:59,270 --> 00:07:02,870
+in a way that pulls the
+treatment effect closer
+
+131
+00:07:02,870 --> 00:07:05,210
+to what we expect from the RCT.
+
+132
+00:07:05,210 --> 00:07:08,270
+This approach is called
+cost-sensitive learning
+
+133
+00:07:08,270 --> 00:07:10,640
+and is widely used in
+machine learning when
+
+134
+00:07:10,640 --> 00:07:12,540
+working with imbalanced data.
+
+135
+00:07:12,540 --> 00:07:18,130
+But here, we repurpose it to
+correct for confounding bias.
+
+136
+00:07:18,130 --> 00:07:20,340
+To the best of our
+knowledge, this
+
+137
+00:07:20,340 --> 00:07:23,070
+is the first time
+cost-sensitive learning has
+
+138
+00:07:23,070 --> 00:07:26,460
+been applied in this context.
+
+139
+00:07:26,460 --> 00:07:30,510
+It's important to emphasize
+how we choose the right weight.
+
+140
+00:07:30,510 --> 00:07:33,510
+We gradually increased
+weight until the sensitivity
+
+141
+00:07:33,510 --> 00:07:36,690
+of the decision tree, tested
+on an external data set
+
+142
+00:07:36,690 --> 00:07:40,590
+from another
+institution, reached 90%.
+
+143
+00:07:40,590 --> 00:07:42,240
+What does this mean?
+
+144
+00:07:42,240 --> 00:07:45,180
+It means that the tree
+now assigns treatment
+
+145
+00:07:45,180 --> 00:07:50,640
+to at least 90% of patients
+who experienced a recurrence.
+
+146
+00:07:50,640 --> 00:07:52,710
+Why is this important?
+
+147
+00:07:52,710 --> 00:07:55,740
+Because it ensures
+that our model captures
+
+148
+00:07:55,740 --> 00:08:00,060
+all high-risk patients, even
+those whose recurrence might not
+
+149
+00:08:00,060 --> 00:08:03,240
+have been preventable
+by treatment.
+
+150
+00:08:03,240 --> 00:08:07,080
+This high-sensitivity target
+broadens the treatment
+
+151
+00:08:07,080 --> 00:08:10,890
+assignment, minimizing the
+risk of undertreating someone
+
+152
+00:08:10,890 --> 00:08:15,060
+who truly needs imatinib.
+
+153
+00:08:15,060 --> 00:08:19,270
+Now that we have completed
+the two deconfounding steps,
+
+154
+00:08:19,270 --> 00:08:23,400
+we are ready to move from
+prediction to decision.
+
+155
+00:08:23,400 --> 00:08:27,210
+We can now estimate the optimal
+treatment for a given patient
+
+156
+00:08:27,210 --> 00:08:29,940
+by comparing their
+predicted prognosis
+
+157
+00:08:29,940 --> 00:08:33,030
+with and without imatinib.
+
+158
+00:08:33,030 --> 00:08:36,390
+Naturally, we would
+choose whichever option
+
+159
+00:08:36,390 --> 00:08:39,809
+maximizes survival probability.
+
+160
+00:08:39,809 --> 00:08:41,940
+But there's a problem.
+
+161
+00:08:41,940 --> 00:08:43,950
+These predictions
+are often generated
+
+162
+00:08:43,950 --> 00:08:48,180
+using black box models,
+such as random forests,
+
+163
+00:08:48,180 --> 00:08:51,720
+and that creates
+a major barrier.
+
+164
+00:08:51,720 --> 00:08:54,930
+Clinicians will not trust
+predictions they cannot
+
+165
+00:08:54,930 --> 00:09:00,600
+understand, so we need a way to
+open the black box to understand
+
+166
+00:09:00,600 --> 00:09:03,300
+what is driving the
+model's predictions.
+
+167
+00:09:03,300 --> 00:09:06,510
+Specifically, we
+want to identify
+
+168
+00:09:06,510 --> 00:09:10,830
+which patient- or tumor-related
+characteristics explain
+
+169
+00:09:10,830 --> 00:09:15,330
+why the model prefers one
+treatment over another.
+
+170
+00:09:15,330 --> 00:09:19,920
+This brings us to Optimal Policy
+Trees, or OPTs, such as the one
+
+171
+00:09:19,920 --> 00:09:21,140
+displayed on this slide.
+
+172
+00:09:21,140 --> 00:09:23,820
+
+
+173
+00:09:23,820 --> 00:09:26,770
+To assess how well this
+decision tree performs,
+
+174
+00:09:26,770 --> 00:09:32,220
+we tested it in an
+independent external cohort.
+
+175
+00:09:32,220 --> 00:09:37,380
+In the test cohort from Poland,
+which included 557 patients,
+
+176
+00:09:37,380 --> 00:09:41,040
+the decision tree achieved
+a sensitivity of 89%
+
+177
+00:09:41,040 --> 00:09:44,160
+and a specificity of 70%.
+
+178
+00:09:44,160 --> 00:09:49,210
+In the validation cohort from
+Spain, including 411 patients,
+
+179
+00:09:49,210 --> 00:09:55,320
+the sensitivity was 85%,
+and specificity was 57%.
+
+180
+00:09:55,320 --> 00:09:58,000
+Let's take a moment to
+interpret these numbers.
+
+181
+00:09:58,000 --> 00:10:00,870
+Sensitivity is our safety net.
+
+182
+00:10:00,870 --> 00:10:03,060
+It reflects the
+proportion of patients
+
+183
+00:10:03,060 --> 00:10:07,020
+who recur and are correctly
+assigned to treatment.
+
+184
+00:10:07,020 --> 00:10:11,400
+So a sensitivity of 89%
+means we are catching
+
+185
+00:10:11,400 --> 00:10:13,620
+almost all high-risk patients.
+
+186
+00:10:13,620 --> 00:10:18,120
+We are not missing
+people who need the drug.
+
+187
+00:10:18,120 --> 00:10:20,860
+But what is more
+exciting is specificity.
+
+188
+00:10:20,860 --> 00:10:23,320
+This is where the gain happens.
+
+189
+00:10:23,320 --> 00:10:28,210
+A specificity of 70% means that
+we correctly spare treatment
+
+190
+00:10:28,210 --> 00:10:33,970
+in 70% of patients who would
+have received it unnecessarily.
+
+191
+00:10:33,970 --> 00:10:36,290
+So while sensitivity
+keeps us safe,
+
+192
+00:10:36,290 --> 00:10:42,850
+specificity gives us impact
+by reducing overtreatment.
+
+193
+00:10:42,850 --> 00:10:48,070
+This slide concludes part 1 of
+the lecture, where our goal was
+
+194
+00:10:48,070 --> 00:10:51,170
+to identify patients who
+do not need treatment,
+
+195
+00:10:51,170 --> 00:10:55,780
+those with a good prognosis who
+do well even without therapy.
+
+196
+00:10:55,780 --> 00:10:59,570
+To do that responsibly
+using real-world data,
+
+197
+00:10:59,570 --> 00:11:02,680
+we had to solve two
+core challenges--
+
+198
+00:11:02,680 --> 00:11:05,800
+first, correct for
+observed confounding,
+
+199
+00:11:05,800 --> 00:11:08,720
+and, second, address
+unobserved confounding,
+
+200
+00:11:08,720 --> 00:11:11,800
+which is even harder.
+
+201
+00:11:11,800 --> 00:11:16,510
+This is where road 1 introduces
+three key innovations.
+
+202
+00:11:16,510 --> 00:11:20,170
+First, it applies a novel
+prognostic matching technique
+
+203
+00:11:20,170 --> 00:11:23,610
+that mimics an
+RCT-like population.
+
+204
+00:11:23,610 --> 00:11:26,550
+We select a subset of
+the real-world data
+
+205
+00:11:26,550 --> 00:11:29,220
+in which treated and
+untreated patients have
+
+206
+00:11:29,220 --> 00:11:31,860
+aligned baseline
+prognosis, estimated
+
+207
+00:11:31,860 --> 00:11:34,560
+using a counterfactual model.
+
+208
+00:11:34,560 --> 00:11:38,610
+This lets us emulate the
+structure of a trial and address
+
+209
+00:11:38,610 --> 00:11:41,370
+observed confounding.
+
+210
+00:11:41,370 --> 00:11:45,570
+Second, we go a step further
+and address unobserved
+
+211
+00:11:45,570 --> 00:11:48,660
+confounding through
+cost-sensitive learning,
+
+212
+00:11:48,660 --> 00:11:52,840
+increasing the weight of treated
+patients with good outcomes.
+
+213
+00:11:52,840 --> 00:11:56,280
+We repurpose sensitivity
+and specificity
+
+214
+00:11:56,280 --> 00:12:00,750
+as tuning targets so that
+the model emphasizes safety,
+
+215
+00:12:00,750 --> 00:12:04,650
+by not missing high-risk
+patients, and utility,
+
+216
+00:12:04,650 --> 00:12:08,250
+by minimizing
+unnecessary treatment.
+
+217
+00:12:08,250 --> 00:12:10,690
+Finally, to make
+this actionable,
+
+218
+00:12:10,690 --> 00:12:13,890
+we use optimal policy trees.
+
+219
+00:12:13,890 --> 00:12:18,070
+These trees produce clinically
+interpretable rules,
+
+220
+00:12:18,070 --> 00:12:20,700
+not black box
+predictions, allowing
+
+221
+00:12:20,700 --> 00:12:24,750
+us to understand and trust how
+treatment recommendations are
+
+222
+00:12:24,750 --> 00:12:26,300
+made.
