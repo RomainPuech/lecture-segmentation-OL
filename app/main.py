@@ -40,13 +40,20 @@ from deck_splitter import split_deck
 
 # ── app setup ──────────────────────────────────────────────────────────────────
 
-# Support two layouts:
-#   local dev  → project/app/main.py + project/static/
-#   Docker     → /app/main.py        + /app/static/
-BASE_DIR   = Path(__file__).parent.parent
-STATIC_DIR = BASE_DIR / "static"
-if not STATIC_DIR.exists():
-    STATIC_DIR = Path(__file__).parent / "static"
+# Locate the static directory regardless of working directory or build layout.
+# Walk upward from this file and also check alongside it.
+def _find_static() -> Path:
+    candidates = [
+        Path(__file__).parent / "static",           # Docker: /app/static
+        Path(__file__).parent.parent / "static",    # local dev: project/static
+    ]
+    for p in candidates:
+        if p.is_dir():
+            return p
+    # Last resort: return the first candidate and let FastAPI report a clear error
+    return candidates[0]
+
+STATIC_DIR = _find_static()
 
 app = FastAPI(title="Slide Deck Segmenter")
 app.add_middleware(
