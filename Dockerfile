@@ -26,7 +26,7 @@ ENV HOME=/tmp \
     PYTHONUNBUFFERED=1 \
     DISPLAY=
 
-EXPOSE 8000
+EXPOSE 8080
 
-# Railway injects $PORT; fall back to 8000 for local Docker use.
-CMD ["sh", "-c", "python -m uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Railway injects $PORT; fall back to 8080 for local Docker use.
+CMD ["sh", "-c", "python -m uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]
