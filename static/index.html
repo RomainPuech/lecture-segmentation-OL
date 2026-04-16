@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Slide Deck Segmenter</title>
 <style>
-  /* ── reset & base ───────────────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -24,313 +23,190 @@
     --shadow:  0 4px 24px rgba(0,0,0,.4);
   }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-    padding: 0 0 60px;
-  }
+  body { background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif;
+         font-size:15px; line-height:1.6; min-height:100vh; padding-bottom:60px; }
 
-  /* ── header ─────────────────────────────────────────────────────────── */
-  header {
-    background: linear-gradient(135deg, #1a1d27 0%, #12141e 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 24px 40px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .logo {
-    width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-  }
-  header h1 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
-  header p  { font-size: 13px; color: var(--muted); margin-top: 1px; }
+  header { background:linear-gradient(135deg,#1a1d27,#12141e); border-bottom:1px solid var(--border);
+           padding:24px 40px; display:flex; align-items:center; gap:14px; }
+  .logo { width:40px;height:40px; background:linear-gradient(135deg,var(--accent),var(--accent2));
+          border-radius:10px; display:flex;align-items:center;justify-content:center; font-size:20px; }
+  header h1 { font-size:20px; font-weight:700; letter-spacing:-.3px; }
+  header p  { font-size:13px; color:var(--muted); margin-top:1px; }
 
-  /* ── layout ─────────────────────────────────────────────────────────── */
-  main { max-width: 860px; margin: 0 auto; padding: 40px 20px; }
+  /* mode badge */
+  .mode-badge { margin-left:auto; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:700;
+                letter-spacing:.4px; text-transform:uppercase; }
+  .mode-badge.local  { background:rgba(34,197,94,.15); color:var(--success); border:1px solid rgba(34,197,94,.3); }
+  .mode-badge.remote { background:rgba(108,99,255,.15); color:var(--accent);  border:1px solid rgba(108,99,255,.3); }
 
-  /* ── step cards ─────────────────────────────────────────────────────── */
-  .step { display: none; }
-  .step.active { display: block; }
+  main { max-width:860px; margin:0 auto; padding:40px 20px; }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 32px;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow);
-  }
-  .card-title {
-    font-size: 17px; font-weight: 700;
-    margin-bottom: 24px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .badge {
-    background: var(--accent);
-    color: #fff;
-    border-radius: 50%;
-    width: 26px; height: 26px;
-    font-size: 13px; font-weight: 800;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
+  .step { display:none; }
+  .step.active { display:block; }
 
-  /* ── path field ──────────────────────────────────────────────────────── */
-  .field { margin-bottom: 20px; }
-  label.field-label {
-    display: block; font-size: 13px; font-weight: 600;
-    color: var(--muted); margin-bottom: 7px;
-    letter-spacing: .4px; text-transform: uppercase;
-  }
-  .path-row {
-    display: flex; gap: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: border-color .15s;
-  }
-  .path-row:focus-within { border-color: var(--accent); }
-  .path-row input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-size: 14px;
-    padding: 10px 14px;
-    outline: none;
-    min-width: 0;
-  }
-  .path-row input::placeholder { color: var(--muted); }
-  .browse-btn {
-    background: rgba(108,99,255,.15);
-    border: none;
-    border-left: 1px solid var(--border);
-    color: var(--accent);
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 0 16px;
-    white-space: nowrap;
-    transition: background .15s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .browse-btn:hover { background: rgba(108,99,255,.28); }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+          padding:32px; margin-bottom:24px; box-shadow:var(--shadow); }
+  .card-title { font-size:17px; font-weight:700; margin-bottom:24px;
+                display:flex; align-items:center; gap:10px; }
+  .badge { background:var(--accent); color:#fff; border-radius:50%; width:26px; height:26px;
+           font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
-  /* ── radio ───────────────────────────────────────────────────────────── */
-  .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
-  .radio-option {
-    flex: 1; min-width: 90px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    cursor: pointer;
-    transition: border-color .15s, background .15s;
-    display: flex; align-items: center; gap: 9px;
-    font-size: 14px;
-  }
-  .radio-option input[type="radio"] { accent-color: var(--accent); width: 16px; height: 16px; }
-  .radio-option.selected { border-color: var(--accent); background: rgba(108,99,255,.08); }
+  /* ── path input (local) ── */
+  .field { margin-bottom:20px; }
+  label.field-label { display:block; font-size:13px; font-weight:600; color:var(--muted);
+                      margin-bottom:7px; letter-spacing:.4px; text-transform:uppercase; }
+  .path-row { display:flex; background:var(--surface); border:1px solid var(--border);
+              border-radius:8px; overflow:hidden; transition:border-color .15s; }
+  .path-row:focus-within { border-color:var(--accent); }
+  .path-row input { flex:1; background:transparent; border:none; color:var(--text);
+                    font-size:14px; padding:10px 14px; outline:none; min-width:0; }
+  .path-row input::placeholder { color:var(--muted); }
+  .browse-btn { background:rgba(108,99,255,.15); border:none; border-left:1px solid var(--border);
+                color:var(--accent); cursor:pointer; font-size:13px; font-weight:700;
+                padding:0 16px; white-space:nowrap; transition:background .15s;
+                display:flex; align-items:center; gap:6px; }
+  .browse-btn:hover { background:rgba(108,99,255,.28); }
 
-  /* ── buttons ─────────────────────────────────────────────────────────── */
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 11px 24px; border-radius: 8px;
-    font-size: 14px; font-weight: 700;
-    border: none; cursor: pointer;
-    transition: opacity .15s, transform .1s;
-  }
-  .btn:active { transform: scale(.97); }
-  .btn:disabled { opacity: .45; cursor: not-allowed; }
-  .btn-primary   { background: var(--accent); color: #fff; }
-  .btn-primary:hover:not(:disabled) { opacity: .9; }
-  .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-  .btn-ghost     { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  /* ── upload zones (remote) ── */
+  .upload-pair { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+  @media(max-width:600px){ .upload-pair { grid-template-columns:1fr; } }
 
-  .actions { display: flex; gap: 12px; margin-top: 28px; align-items: center; flex-wrap: wrap; }
+  .upload-zone { border:2px dashed var(--border); border-radius:10px; padding:24px 16px;
+                 text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
+                 background:var(--surface); position:relative; }
+  .upload-zone:hover, .upload-zone.dragover { border-color:var(--accent); background:rgba(108,99,255,.06); }
+  .upload-zone.has-files { border-color:var(--success); border-style:solid; }
+  .upload-zone input[type=file] { display:none; }
+  .upload-icon { font-size:32px; margin-bottom:8px; }
+  .upload-zone h3 { font-size:14px; font-weight:700; margin-bottom:4px; }
+  .upload-zone p  { font-size:12px; color:var(--muted); }
+  .upload-file-list { margin-top:12px; text-align:left; }
+  .upload-file-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted);
+                      padding:3px 0; }
+  .upload-file-item::before { content:'📄'; font-size:13px; }
+  .upload-count { display:inline-block; background:rgba(34,197,94,.15); color:var(--success);
+                  border-radius:10px; padding:2px 8px; font-size:11px; font-weight:700; margin-top:6px; }
 
-  /* ── review table ────────────────────────────────────────────────────── */
-  .table-wrap { overflow-x: auto; margin-top: 4px; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th {
-    text-align: left; padding: 10px 14px;
-    font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
-    color: var(--muted); border-bottom: 1px solid var(--border);
-  }
-  td { padding: 13px 14px; border-bottom: 1px solid rgba(45,48,64,.5); vertical-align: middle; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,.02); }
+  /* ── radio ── */
+  .radio-group { display:flex; gap:10px; flex-wrap:wrap; }
+  .radio-option { flex:1; min-width:90px; border:1.5px solid var(--border); border-radius:8px;
+                  padding:10px 14px; cursor:pointer; transition:border-color .15s, background .15s;
+                  display:flex; align-items:center; gap:9px; font-size:14px; }
+  .radio-option input[type=radio] { accent-color:var(--accent); width:16px; height:16px; }
+  .radio-option.selected { border-color:var(--accent); background:rgba(108,99,255,.08); }
 
-  select {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; color: var(--text);
-    font-size: 13px; padding: 5px 10px;
-    outline: none; cursor: pointer;
-  }
+  /* ── buttons ── */
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:11px 24px; border-radius:8px;
+         font-size:14px; font-weight:700; border:none; cursor:pointer; transition:opacity .15s, transform .1s; }
+  .btn:active { transform:scale(.97); }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  .btn-primary   { background:var(--accent); color:#fff; }
+  .btn-primary:hover:not(:disabled) { opacity:.9; }
+  .btn-secondary { background:var(--surface); color:var(--text); border:1px solid var(--border); }
+  .btn-success   { background:var(--success); color:#fff; }
+  .btn-success:hover { opacity:.9; }
 
-  .chip       { display: inline-block; background: rgba(108,99,255,.15); color: var(--accent); border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 700; }
-  .chip-green { background: rgba(34,197,94,.12); color: var(--success); }
+  .actions { display:flex; gap:12px; margin-top:28px; align-items:center; flex-wrap:wrap; }
 
-  /* ── toggle ──────────────────────────────────────────────────────────── */
-  .toggle { position: relative; display: inline-block; width: 40px; height: 22px; }
-  .toggle input { display: none; }
-  .slider { position: absolute; inset: 0; background: var(--border); border-radius: 22px; cursor: pointer; transition: background .2s; }
-  .slider::before { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: transform .2s; }
-  .toggle input:checked + .slider { background: var(--accent); }
-  .toggle input:checked + .slider::before { transform: translateX(18px); }
+  /* ── review table ── */
+  .table-wrap { overflow-x:auto; margin-top:4px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { text-align:left; padding:10px 14px; font-size:12px; font-weight:700;
+       letter-spacing:.5px; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
+  td { padding:13px 14px; border-bottom:1px solid rgba(45,48,64,.5); vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(255,255,255,.02); }
 
-  /* ── progress ────────────────────────────────────────────────────────── */
-  .progress-bar-wrap { background: var(--surface); border-radius: 8px; height: 10px; overflow: hidden; margin: 16px 0; }
-  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width .4s ease; border-radius: 8px; }
-  .log-box {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-    padding: 16px; max-height: 340px; overflow-y: auto;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 12.5px; line-height: 1.7;
-  }
-  .log-line { display: flex; gap: 10px; }
-  .log-time { color: var(--muted); flex-shrink: 0; }
-  .log-msg  { flex: 1; }
-  .log-info    .log-msg { color: var(--text); }
-  .log-success .log-msg { color: var(--success); }
-  .log-warn    .log-msg { color: var(--warn); }
-  .log-error   .log-msg { color: var(--error); }
+  select { background:var(--surface); border:1px solid var(--border); border-radius:6px;
+           color:var(--text); font-size:13px; padding:5px 10px; outline:none; cursor:pointer; }
 
-  /* ── result ──────────────────────────────────────────────────────────── */
-  .result-files { list-style: none; margin-top: 14px; }
-  .result-files li {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 14px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 7px;
-    margin-bottom: 6px; font-size: 13px;
-  }
-  .result-files li::before { content: '📄'; }
+  .chip       { display:inline-block; background:rgba(108,99,255,.15); color:var(--accent);
+                border-radius:4px; padding:2px 8px; font-size:12px; font-weight:700; }
+  .chip-green { background:rgba(34,197,94,.12); color:var(--success); }
 
-  .warn-banner {
-    background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.3);
-    border-radius: 8px; padding: 12px 16px; font-size: 13px;
-    color: var(--warn); margin-bottom: 20px; display: none;
-  }
+  .toggle { position:relative; display:inline-block; width:40px; height:22px; }
+  .toggle input { display:none; }
+  .slider { position:absolute; inset:0; background:var(--border); border-radius:22px;
+            cursor:pointer; transition:background .2s; }
+  .slider::before { content:''; position:absolute; top:3px; left:3px; width:16px; height:16px;
+                    background:#fff; border-radius:50%; transition:transform .2s; }
+  .toggle input:checked + .slider { background:var(--accent); }
+  .toggle input:checked + .slider::before { transform:translateX(18px); }
 
-  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  /* ── progress ── */
+  .progress-bar-wrap { background:var(--surface); border-radius:8px; height:10px; overflow:hidden; margin:16px 0; }
+  .progress-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2));
+                  width:0%; transition:width .4s ease; border-radius:8px; }
+  .log-box { background:var(--surface); border:1px solid var(--border); border-radius:8px;
+             padding:16px; max-height:340px; overflow-y:auto;
+             font-family:'JetBrains Mono','Fira Code',monospace; font-size:12.5px; line-height:1.7; }
+  .log-line { display:flex; gap:10px; }
+  .log-time { color:var(--muted); flex-shrink:0; }
+  .log-msg  { flex:1; }
+  .log-info    .log-msg { color:var(--text); }
+  .log-success .log-msg { color:var(--success); }
+  .log-warn    .log-msg { color:var(--warn); }
+  .log-error   .log-msg { color:var(--error); }
 
-  /* ══════════════════════════════════════════════════════════════════════
-     FILE BROWSER MODAL
-  ══════════════════════════════════════════════════════════════════════ */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 1000;
-    background: rgba(0,0,0,.65);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity .2s;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  /* ── done ── */
+  .result-files { list-style:none; margin-top:14px; }
+  .result-files li { display:flex; align-items:center; gap:10px; padding:9px 14px;
+                     background:var(--surface); border:1px solid var(--border);
+                     border-radius:7px; margin-bottom:6px; font-size:13px; }
+  .result-files li::before { content:'📄'; }
 
-  .modal {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow: 0 24px 60px rgba(0,0,0,.7);
-    width: min(680px, 95vw);
-    max-height: 80vh;
-    display: flex; flex-direction: column;
-    transform: translateY(12px);
-    transition: transform .2s;
-  }
-  .modal-overlay.open .modal { transform: translateY(0); }
+  .download-box { background:rgba(108,99,255,.08); border:1px solid rgba(108,99,255,.25);
+                  border-radius:10px; padding:24px; text-align:center; margin-top:16px; }
+  .download-box p { color:var(--muted); font-size:13px; margin-bottom:16px; }
 
-  .modal-header {
-    display: flex; align-items: center; gap: 12px;
-    padding: 18px 20px 14px;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .modal-title { font-size: 15px; font-weight: 700; flex: 1; }
-  .modal-close {
-    background: none; border: none; color: var(--muted);
-    font-size: 20px; cursor: pointer; line-height: 1;
-    padding: 2px 6px; border-radius: 4px;
-    transition: color .15s, background .15s;
-  }
-  .modal-close:hover { color: var(--text); background: rgba(255,255,255,.07); }
+  .warn-banner { background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3);
+                 border-radius:8px; padding:12px 16px; font-size:13px; color:var(--warn);
+                 margin-bottom:20px; display:none; }
 
-  /* breadcrumb */
-  .breadcrumb {
-    display: flex; align-items: center; flex-wrap: wrap; gap: 2px;
-    padding: 10px 20px;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-    font-size: 13px;
-    background: var(--surface);
-  }
-  .bc-part {
-    color: var(--muted); cursor: pointer; padding: 2px 5px;
-    border-radius: 4px; transition: color .12s, background .12s;
-    max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .bc-part:hover { color: var(--text); background: rgba(255,255,255,.06); }
-  .bc-part.current { color: var(--text); cursor: default; font-weight: 600; }
-  .bc-sep { color: var(--border); user-select: none; }
+  hr { border:none; border-top:1px solid var(--border); margin:28px 0; }
 
-  /* entry list */
-  .file-list {
-    flex: 1; overflow-y: auto;
-    padding: 8px 8px;
-  }
-  .file-list:empty::after {
-    content: 'This folder is empty.';
-    display: block; text-align: center;
-    color: var(--muted); font-size: 13px; padding: 30px;
-  }
-  .file-entry {
-    display: flex; align-items: center; gap: 12px;
-    padding: 9px 12px;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: background .12s;
-    user-select: none;
-  }
-  .file-entry:hover   { background: rgba(255,255,255,.05); }
-  .file-entry.focused { background: rgba(108,99,255,.15); outline: 1px solid var(--accent); }
-  .file-icon { font-size: 18px; flex-shrink: 0; width: 24px; text-align: center; }
-  .file-name { flex: 1; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .file-type-badge {
-    font-size: 10px; font-weight: 700; letter-spacing: .5px;
-    padding: 2px 6px; border-radius: 4px; flex-shrink: 0;
-    background: rgba(108,99,255,.15); color: var(--accent);
-  }
-  .file-type-badge.pdf  { background: rgba(239,68,68,.12); color: var(--error); }
-  .file-type-badge.pptx { background: rgba(245,158,11,.12); color: var(--warn); }
-
-  /* loading spinner */
-  .spinner {
-    width: 28px; height: 28px; margin: 40px auto;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* modal footer */
-  .modal-footer {
-    display: flex; align-items: center; gap: 12px;
-    padding: 14px 20px;
-    border-top: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .selected-path {
-    flex: 1; font-size: 12px; color: var(--muted);
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .selected-path span { color: var(--accent); font-weight: 600; }
+  /* ══ FILE BROWSER MODAL ══════════════════════════════════════════════ */
+  .modal-overlay { position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.65);
+                   display:flex; align-items:center; justify-content:center;
+                   opacity:0; pointer-events:none; transition:opacity .2s; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:var(--card); border:1px solid var(--border); border-radius:14px;
+           box-shadow:0 24px 60px rgba(0,0,0,.7); width:min(680px,95vw); max-height:80vh;
+           display:flex; flex-direction:column; transform:translateY(12px); transition:transform .2s; }
+  .modal-overlay.open .modal { transform:translateY(0); }
+  .modal-header { display:flex; align-items:center; gap:12px; padding:18px 20px 14px;
+                  border-bottom:1px solid var(--border); flex-shrink:0; }
+  .modal-title { font-size:15px; font-weight:700; flex:1; }
+  .modal-close { background:none; border:none; color:var(--muted); font-size:20px;
+                 cursor:pointer; line-height:1; padding:2px 6px; border-radius:4px;
+                 transition:color .15s, background .15s; }
+  .modal-close:hover { color:var(--text); background:rgba(255,255,255,.07); }
+  .breadcrumb { display:flex; align-items:center; flex-wrap:wrap; gap:2px; padding:10px 20px;
+                border-bottom:1px solid var(--border); flex-shrink:0; font-size:13px; background:var(--surface); }
+  .bc-part { color:var(--muted); cursor:pointer; padding:2px 5px; border-radius:4px;
+             transition:color .12s, background .12s; max-width:160px;
+             overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .bc-part:hover { color:var(--text); background:rgba(255,255,255,.06); }
+  .bc-part.current { color:var(--text); cursor:default; font-weight:600; }
+  .bc-sep { color:var(--border); user-select:none; }
+  .file-list { flex:1; overflow-y:auto; padding:8px; }
+  .file-entry { display:flex; align-items:center; gap:12px; padding:9px 12px;
+                border-radius:7px; cursor:pointer; transition:background .12s; user-select:none; }
+  .file-entry:hover  { background:rgba(255,255,255,.05); }
+  .file-entry.focused { background:rgba(108,99,255,.15); outline:1px solid var(--accent); }
+  .file-icon { font-size:18px; flex-shrink:0; width:24px; text-align:center; }
+  .file-name { flex:1; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .file-type-badge { font-size:10px; font-weight:700; letter-spacing:.5px; padding:2px 6px;
+                     border-radius:4px; flex-shrink:0; background:rgba(108,99,255,.15); color:var(--accent); }
+  .file-type-badge.pdf  { background:rgba(239,68,68,.12); color:var(--error); }
+  .file-type-badge.pptx { background:rgba(245,158,11,.12); color:var(--warn); }
+  .spinner { width:28px; height:28px; margin:40px auto; border:3px solid var(--border);
+             border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .modal-footer { display:flex; align-items:center; gap:12px; padding:14px 20px;
+                  border-top:1px solid var(--border); flex-shrink:0; }
+  .selected-path { flex:1; font-size:12px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .selected-path span { color:var(--accent); font-weight:600; }
 </style>
 </head>
 <body>
@@ -341,11 +217,12 @@
     <h1>Slide Deck Segmenter</h1>
     <p>Automatically split lecture decks into per-segment slide decks using AI</p>
   </div>
+  <span id="mode-badge" class="mode-badge"></span>
 </header>
 
 <main>
 
-  <!-- ── STEP 1: INPUT ─────────────────────────────────────────────── -->
+  <!-- ── STEP 1: INPUT ───────────────────────────────────────────── -->
   <div id="step-input" class="step active">
 
     <div id="lo-warning" class="warn-banner">
@@ -358,27 +235,54 @@
     <div class="card">
       <div class="card-title"><span class="badge">1</span> Input files</div>
 
-      <div class="field">
-        <label class="field-label">Deck file or folder of decks</label>
-        <div class="path-row">
-          <input type="text" id="deck-path" placeholder="Click Browse to select…" readonly/>
-          <button class="browse-btn" onclick="openBrowser('deck')">📂 Browse</button>
+      <!-- LOCAL: path browser -->
+      <div id="local-inputs">
+        <div class="field">
+          <label class="field-label">Deck file or folder of decks</label>
+          <div class="path-row">
+            <input type="text" id="deck-path" placeholder="Click Browse to select…" readonly/>
+            <button class="browse-btn" onclick="openBrowser('deck')">📂 Browse</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">SRT folder</label>
+          <div class="path-row">
+            <input type="text" id="srt-path" placeholder="Click Browse to select…" readonly/>
+            <button class="browse-btn" onclick="openBrowser('srt')">📂 Browse</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Output folder</label>
+          <div class="path-row">
+            <input type="text" id="out-path" placeholder="Click Browse to select…" readonly/>
+            <button class="browse-btn" onclick="openBrowser('out')">📂 Browse</button>
+          </div>
         </div>
       </div>
 
-      <div class="field">
-        <label class="field-label">SRT folder</label>
-        <div class="path-row">
-          <input type="text" id="srt-path" placeholder="Click Browse to select…" readonly/>
-          <button class="browse-btn" onclick="openBrowser('srt')">📂 Browse</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="field-label">Output folder</label>
-        <div class="path-row">
-          <input type="text" id="out-path" placeholder="Click Browse to select…" readonly/>
-          <button class="browse-btn" onclick="openBrowser('out')">📂 Browse</button>
+      <!-- REMOTE: file upload -->
+      <div id="remote-inputs" style="display:none">
+        <div class="upload-pair">
+          <div class="upload-zone" id="deck-zone" onclick="document.getElementById('deck-files').click()"
+               ondragover="onDragOver(event,'deck-zone')" ondragleave="onDragLeave('deck-zone')"
+               ondrop="onDrop(event,'deck-files','deck-zone')">
+            <input type="file" id="deck-files" accept=".pptx,.pdf" multiple
+                   onchange="onFilePick('deck-files','deck-zone','deck-file-list')"/>
+            <div class="upload-icon">📊</div>
+            <h3>Deck file(s)</h3>
+            <p>One .pptx or .pdf per lecture</p>
+            <div id="deck-file-list" class="upload-file-list"></div>
+          </div>
+          <div class="upload-zone" id="srt-zone" onclick="document.getElementById('srt-files').click()"
+               ondragover="onDragOver(event,'srt-zone')" ondragleave="onDragLeave('srt-zone')"
+               ondrop="onDrop(event,'srt-files','srt-zone')">
+            <input type="file" id="srt-files" accept=".srt" multiple
+                   onchange="onFilePick('srt-files','srt-zone','srt-file-list')"/>
+            <div class="upload-icon">📝</div>
+            <h3>SRT files</h3>
+            <p>All segments for all lectures</p>
+            <div id="srt-file-list" class="upload-file-list"></div>
+          </div>
         </div>
       </div>
 
@@ -403,13 +307,13 @@
       </div>
 
       <div class="actions">
-        <button class="btn btn-primary" onclick="doScan()">🔍 Scan Files</button>
+        <button class="btn btn-primary" id="scan-btn" onclick="doScan()">🔍 Scan Files</button>
         <span id="scan-status" style="font-size:13px;color:var(--muted)"></span>
       </div>
     </div>
   </div>
 
-  <!-- ── STEP 2: REVIEW ────────────────────────────────────────────── -->
+  <!-- ── STEP 2: REVIEW ──────────────────────────────────────────── -->
   <div id="step-review" class="step">
     <div class="card">
       <div class="card-title"><span class="badge">2</span> Review &amp; confirm</div>
@@ -418,15 +322,9 @@
         then click <strong>Process</strong>.
       </p>
       <div class="table-wrap">
-        <table id="lecture-table">
+        <table>
           <thead>
-            <tr>
-              <th>Lecture</th>
-              <th>Format</th>
-              <th>Segments</th>
-              <th>Cover slide</th>
-              <th>Include</th>
-            </tr>
+            <tr><th>Lecture</th><th>Format</th><th>Segments</th><th>Cover slide</th><th>Include</th></tr>
           </thead>
           <tbody id="lecture-tbody"></tbody>
         </table>
@@ -438,52 +336,55 @@
     </div>
   </div>
 
-  <!-- ── STEP 3: PROGRESS ──────────────────────────────────────────── -->
+  <!-- ── STEP 3: PROGRESS ────────────────────────────────────────── -->
   <div id="step-progress" class="step">
     <div class="card">
       <div class="card-title"><span class="badge">3</span> Processing…</div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar" id="progress-bar"></div>
-      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
       <p id="progress-label" style="font-size:13px;color:var(--muted);margin-bottom:14px">Starting…</p>
       <div class="log-box" id="log-box"></div>
     </div>
   </div>
 
-  <!-- ── STEP 4: DONE ──────────────────────────────────────────────── -->
+  <!-- ── STEP 4: DONE ────────────────────────────────────────────── -->
   <div id="step-done" class="step">
     <div class="card">
       <div class="card-title"><span class="badge" style="background:var(--success)">✓</span> Done!</div>
-      <p style="color:var(--muted);font-size:13px">The following files have been saved to your output folder:</p>
-      <ul class="result-files" id="result-files"></ul>
+
+      <!-- local: show file list -->
+      <div id="done-local">
+        <p style="color:var(--muted);font-size:13px">Files saved to your output folder:</p>
+        <ul class="result-files" id="result-files"></ul>
+      </div>
+
+      <!-- remote: download ZIP -->
+      <div id="done-remote" style="display:none">
+        <div class="download-box">
+          <p>Your segmented slide decks are ready. Click below to download them as a ZIP archive.</p>
+          <button class="btn btn-success" onclick="downloadZip()">⬇ Download segments.zip</button>
+        </div>
+      </div>
+
       <div class="actions">
-        <button class="btn btn-primary" onclick="showStep('input')">Process another deck</button>
+        <button class="btn btn-primary" onclick="resetAll()">Process another deck</button>
       </div>
     </div>
   </div>
 
 </main>
 
-<!-- ══════════════════════════════════════════════════════════════════
-     FILE BROWSER MODAL
-═══════════════════════════════════════════════════════════════════ -->
+<!-- ══ FILE BROWSER MODAL ════════════════════════════════════════════ -->
 <div class="modal-overlay" id="browser-overlay" onclick="handleOverlayClick(event)">
   <div class="modal" role="dialog" aria-modal="true">
-
     <div class="modal-header">
       <span id="browser-title" class="modal-title">Select folder</span>
-      <button class="modal-close" onclick="closeBrowser()" title="Cancel">✕</button>
+      <button class="modal-close" onclick="closeBrowser()">✕</button>
     </div>
-
     <div class="breadcrumb" id="breadcrumb"></div>
-
     <div class="file-list" id="file-list"></div>
-
     <div class="modal-footer">
-      <div class="selected-path" id="selected-path-label">
-        <span id="selected-path-text">No selection</span>
-      </div>
-      <button class="btn btn-ghost" onclick="closeBrowser()">Cancel</button>
+      <div class="selected-path"><span id="selected-path-text">No selection</span></div>
+      <button class="btn btn-secondary" onclick="closeBrowser()">Cancel</button>
       <button class="btn btn-primary" id="browser-select-btn" onclick="confirmBrowserSelection()">
         Select this folder
       </button>
@@ -493,16 +394,34 @@
 
 <script>
 /* ════════════════════════════════════════════════════════
+   MODE DETECTION
+════════════════════════════════════════════════════════ */
+const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
+
+(function initMode() {
+  const badge = document.getElementById('mode-badge');
+  if (isLocal) {
+    badge.textContent = '🖥 Local';
+    badge.className = 'mode-badge local';
+    document.getElementById('local-inputs').style.display  = 'block';
+    document.getElementById('remote-inputs').style.display = 'none';
+    document.getElementById('scan-btn').textContent = '🔍 Scan Files';
+  } else {
+    badge.textContent = '☁ Remote';
+    badge.className = 'mode-badge remote';
+    document.getElementById('local-inputs').style.display  = 'none';
+    document.getElementById('remote-inputs').style.display = 'block';
+    document.getElementById('scan-btn').textContent = '⬆ Upload & Scan';
+  }
+})();
+
+/* ════════════════════════════════════════════════════════
    STATE
 ════════════════════════════════════════════════════════ */
-let lectureData   = [];
+let lectureData    = [];
 let globalCoverMode = 'auto';
-
-// browser state
-let browserTarget  = '';    // which field: 'deck' | 'srt' | 'out'
-let browserCurrent = '';    // current directory path
-let browserFocused = null;  // currently focused entry path (null = the directory itself)
-let allowFiles     = false; // deck picker allows .pptx / .pdf files too
+let currentSessionId = null;
+let currentJobId     = null;
 
 /* ════════════════════════════════════════════════════════
    STEP NAVIGATION
@@ -510,21 +429,38 @@ let allowFiles     = false; // deck picker allows .pptx / .pdf files too
 function showStep(name) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.getElementById(`step-${name}`).classList.add('active');
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
+}
+
+function resetAll() {
+  currentSessionId = null;
+  currentJobId     = null;
+  lectureData = [];
+  // clear upload zones
+  ['deck-files','srt-files'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['deck-zone','srt-zone'].forEach(id => {
+    const z = document.getElementById(id);
+    if (z) z.classList.remove('has-files');
+  });
+  ['deck-file-list','srt-file-list'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '';
+  });
+  showStep('input');
 }
 
 /* ════════════════════════════════════════════════════════
-   RADIO COVER MODE
+   RADIO
 ════════════════════════════════════════════════════════ */
 document.getElementById('cover-radio').addEventListener('change', e => {
   if (e.target.type !== 'radio') return;
   globalCoverMode = e.target.value;
-  document.querySelectorAll('#cover-radio .radio-option').forEach(el => {
-    el.classList.toggle('selected', el.querySelector('input').checked);
-  });
-  document.querySelectorAll('#lecture-tbody select').forEach(sel => {
-    sel.value = globalCoverMode;
-  });
+  document.querySelectorAll('#cover-radio .radio-option').forEach(el =>
+    el.classList.toggle('selected', el.querySelector('input').checked));
+  document.querySelectorAll('#lecture-tbody select').forEach(sel => sel.value = globalCoverMode);
 });
 
 /* ════════════════════════════════════════════════════════
@@ -532,260 +468,107 @@ document.getElementById('cover-radio').addEventListener('change', e => {
 ════════════════════════════════════════════════════════ */
 async function checkHealth() {
   try {
-    const r = await fetch('/api/health');
-    const d = await r.json();
+    const d = await fetch('/api/health').then(r => r.json());
     document.getElementById('lo-warning').style.display = d.libreoffice ? 'none' : 'block';
   } catch(e) {}
 }
 checkHealth();
 
 /* ════════════════════════════════════════════════════════
-   FILE BROWSER
+   UPLOAD ZONE HELPERS (remote mode)
 ════════════════════════════════════════════════════════ */
-function openBrowser(target) {
-  browserTarget  = target;
-  allowFiles     = (target === 'deck');
-
-  const titles = {
-    deck: 'Select deck file or folder of decks',
-    srt:  'Select SRT folder',
-    out:  'Select output folder',
-  };
-  document.getElementById('browser-title').textContent = titles[target] || 'Select';
-
-  const btnLabel = allowFiles ? 'Select this folder / file' : 'Select this folder';
-  document.getElementById('browser-select-btn').textContent = btnLabel;
-
-  // start at the current value, or home
-  const currentVal = document.getElementById(`${target}-path`).value;
-  const startPath  = currentVal || '';
-
-  browserFocused = null;
-  openOverlay();
-  navigateTo(startPath);
+function onDragOver(e, zoneId) {
+  e.preventDefault();
+  document.getElementById(zoneId).classList.add('dragover');
 }
-
-function openOverlay() {
-  document.getElementById('browser-overlay').classList.add('open');
-  document.addEventListener('keydown', browserKeyHandler);
+function onDragLeave(zoneId) {
+  document.getElementById(zoneId).classList.remove('dragover');
 }
-
-function closeBrowser() {
-  document.getElementById('browser-overlay').classList.remove('open');
-  document.removeEventListener('keydown', browserKeyHandler);
+function onDrop(e, inputId, zoneId) {
+  e.preventDefault();
+  document.getElementById(zoneId).classList.remove('dragover');
+  const input = document.getElementById(inputId);
+  const dt = new DataTransfer();
+  // merge existing files
+  for (const f of input.files) dt.items.add(f);
+  for (const f of e.dataTransfer.files) dt.items.add(f);
+  input.files = dt.files;
+  input.dispatchEvent(new Event('change'));
 }
-
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('browser-overlay')) closeBrowser();
-}
-
-/* ── navigate ─────────────────────────────────────────── */
-async function navigateTo(path) {
-  const list = document.getElementById('file-list');
-  list.innerHTML = '<div class="spinner"></div>';
-  updateSelectedLabel(null);
-
-  try {
-    const url = '/api/browse' + (path ? '?path=' + encodeURIComponent(path) : '');
-    const res  = await fetch(url);
-    if (!res.ok) {
-      const err = await res.json();
-      list.innerHTML = `<p style="color:var(--error);padding:20px;font-size:13px">Error: ${escHtml(err.detail || 'unknown')}</p>`;
-      return;
-    }
-    const data = await res.json();
-    browserCurrent = data.current;
-    renderBreadcrumb(data.current);
-    renderEntries(data.entries, data.parent);
-    // default focus = the directory itself
-    browserFocused = null;
-    updateSelectedLabel(null);
-  } catch(e) {
-    list.innerHTML = `<p style="color:var(--error);padding:20px;font-size:13px">Connection error: ${escHtml(e.message)}</p>`;
-  }
-}
-
-/* ── breadcrumb ───────────────────────────────────────── */
-function renderBreadcrumb(fullPath) {
-  const bc = document.getElementById('breadcrumb');
-  bc.innerHTML = '';
-
-  // Split on / (POSIX) or \ (Windows)
-  const sep   = fullPath.includes('/') ? '/' : '\\';
-  const parts = fullPath.split(sep).filter(Boolean);
-
-  // Add root
-  const root = document.createElement('span');
-  root.className = 'bc-part';
-  root.textContent = sep === '/' ? '/' : parts[0] + sep;
-  root.title = sep === '/' ? '/' : parts[0];
-  root.onclick = () => navigateTo(sep === '/' ? '/' : parts[0]);
-  bc.appendChild(root);
-
-  // Build up cumulative paths for each part
-  let cumPath = sep === '/' ? '' : parts[0];
-  const startIdx = sep === '/' ? 0 : 1;
-
-  for (let i = startIdx; i < parts.length; i++) {
-    cumPath = (sep === '/') ? `${cumPath}/${parts[i]}` : `${cumPath}${sep}${parts[i]}`;
-    const isLast = i === parts.length - 1;
-
-    const sepc = document.createElement('span');
-    sepc.className = 'bc-sep';
-    sepc.textContent = ' ' + sep + ' ';
-    bc.appendChild(sepc);
-
-    const part = document.createElement('span');
-    part.className = 'bc-part' + (isLast ? ' current' : '');
-    part.textContent = parts[i];
-    part.title = cumPath;
-    if (!isLast) {
-      const capPath = cumPath;
-      part.onclick = () => navigateTo(capPath);
-    }
-    bc.appendChild(part);
-  }
-}
-
-/* ── entry list ───────────────────────────────────────── */
-function renderEntries(entries, parent) {
-  const list = document.getElementById('file-list');
+function onFilePick(inputId, zoneId, listId) {
+  const files = [...document.getElementById(inputId).files];
+  const zone  = document.getElementById(zoneId);
+  const list  = document.getElementById(listId);
+  zone.classList.toggle('has-files', files.length > 0);
   list.innerHTML = '';
-
-  // "up" row if there is a parent
-  if (parent) {
-    const up = makeEntry('⬆', '..  (go up)', 'dir', parent, true);
-    up.onclick = () => navigateTo(parent);
-    list.appendChild(up);
-  }
-
-  entries.forEach(entry => {
-    const isDir  = entry.type === 'dir';
-    const isDeck = entry.type === 'deck';
-    const icon   = isDir ? '📁' : isDeck ? (entry.name.endsWith('.pdf') ? '📕' : '📊') : '📄';
-    const badge  = isDeck ? entry.name.split('.').pop().toLowerCase() : null;
-
-    const row = makeEntry(icon, entry.name, entry.type, entry.path, false, badge);
-
-    row.addEventListener('click', () => {
-      if (isDir) {
-        navigateTo(entry.path);
-      } else if (isDeck && allowFiles) {
-        setFocus(row, entry.path);
-      }
-    });
-
-    row.addEventListener('dblclick', () => {
-      if (isDir) navigateTo(entry.path);
-    });
-
-    list.appendChild(row);
+  if (files.length === 0) return;
+  files.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'upload-file-item';
+    div.textContent = f.name;
+    list.appendChild(div);
   });
-}
-
-function makeEntry(icon, name, type, path, isUp, badge) {
-  const row = document.createElement('div');
-  row.className = 'file-entry';
-  row.dataset.path = path;
-
-  row.innerHTML = `
-    <span class="file-icon">${icon}</span>
-    <span class="file-name" title="${escHtml(path)}">${escHtml(name)}</span>
-    ${badge ? `<span class="file-type-badge ${badge}">${badge.toUpperCase()}</span>` : ''}
-  `;
-  return row;
-}
-
-function setFocus(row, path) {
-  document.querySelectorAll('.file-entry.focused').forEach(r => r.classList.remove('focused'));
-  row.classList.add('focused');
-  browserFocused = path;
-  updateSelectedLabel(path);
-}
-
-function updateSelectedLabel(path) {
-  const span = document.getElementById('selected-path-text');
-  if (path) {
-    const name = path.split('/').pop() || path.split('\\').pop() || path;
-    span.textContent = name;
-    span.style.color = 'var(--accent)';
-  } else {
-    span.textContent = browserCurrent || 'No selection';
-    span.style.color = '';
-  }
-}
-
-/* ── confirm selection ────────────────────────────────── */
-function confirmBrowserSelection() {
-  const chosen = browserFocused || browserCurrent;
-  if (!chosen) return;
-  document.getElementById(`${browserTarget}-path`).value = chosen;
-  closeBrowser();
-}
-
-/* ── keyboard nav ─────────────────────────────────────── */
-function browserKeyHandler(e) {
-  if (e.key === 'Escape')  { closeBrowser(); return; }
-  if (e.key === 'Enter')   { confirmBrowserSelection(); return; }
-
-  const rows = [...document.querySelectorAll('#file-list .file-entry')];
-  if (!rows.length) return;
-
-  const focusedIdx = rows.findIndex(r => r.classList.contains('focused'));
-
-  if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    const next = rows[Math.min(focusedIdx + 1, rows.length - 1)];
-    if (next.dataset.path !== browserCurrent) {
-      setFocus(next, next.dataset.path);
-      next.scrollIntoView({ block: 'nearest' });
-    }
-  }
-  if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    if (focusedIdx <= 0) return;
-    const prev = rows[focusedIdx - 1];
-    setFocus(prev, prev.dataset.path);
-    prev.scrollIntoView({ block: 'nearest' });
-  }
+  const cnt = document.createElement('div');
+  cnt.style.textAlign = 'center';
+  cnt.innerHTML = `<span class="upload-count">${files.length} file${files.length>1?'s':''} selected</span>`;
+  list.appendChild(cnt);
 }
 
 /* ════════════════════════════════════════════════════════
-   SCAN
+   SCAN (local) / UPLOAD & SCAN (remote)
 ════════════════════════════════════════════════════════ */
 async function doScan() {
+  const status = document.getElementById('scan-status');
+  status.textContent = isLocal ? 'Scanning…' : 'Uploading & scanning…';
+
+  if (isLocal) {
+    await doLocalScan(status);
+  } else {
+    await doRemoteScan(status);
+  }
+}
+
+async function doLocalScan(status) {
   const deck = document.getElementById('deck-path').value.trim();
   const srt  = document.getElementById('srt-path').value.trim();
   const out  = document.getElementById('out-path').value.trim();
-
-  if (!deck || !srt || !out) {
-    alert('Please select all three paths before scanning.');
-    return;
-  }
-
-  const status = document.getElementById('scan-status');
-  status.textContent = 'Scanning…';
+  if (!deck || !srt || !out) { alert('Please select all three paths.'); status.textContent=''; return; }
 
   try {
     const res = await fetch('/api/scan', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({deck_path: deck, srt_folder: srt}),
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({deck_path:deck, srt_folder:srt}),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      alert('Scan error: ' + (err.detail || 'unknown'));
-      status.textContent = '';
-      return;
-    }
+    if (!res.ok) { alert('Scan error: ' + (await res.json()).detail); status.textContent=''; return; }
     lectureData = await res.json();
     status.textContent = `Found ${lectureData.length} lecture(s).`;
     buildTable();
     showStep('review');
-  } catch(e) {
-    alert('Connection error: ' + e.message);
-    status.textContent = '';
+  } catch(e) { alert('Connection error: '+e.message); status.textContent=''; }
+}
+
+async function doRemoteScan(status) {
+  const deckFiles = document.getElementById('deck-files').files;
+  const srtFiles  = document.getElementById('srt-files').files;
+  if (!deckFiles.length || !srtFiles.length) {
+    alert('Please upload at least one deck file and at least one SRT file.');
+    status.textContent = ''; return;
   }
+
+  const fd = new FormData();
+  for (const f of deckFiles) fd.append('decks', f);
+  for (const f of srtFiles)  fd.append('srts',  f);
+
+  try {
+    const res = await fetch('/api/upload-and-scan', { method:'POST', body:fd });
+    if (!res.ok) { alert('Upload error: ' + (await res.json()).detail); status.textContent=''; return; }
+    const data = await res.json();
+    currentSessionId = data.session_id;
+    lectureData = data.lectures;
+    status.textContent = `Found ${lectureData.length} lecture(s).`;
+    buildTable();
+    showStep('review');
+  } catch(e) { alert('Connection error: '+e.message); status.textContent=''; }
 }
 
 /* ════════════════════════════════════════════════════════
@@ -794,7 +577,6 @@ async function doScan() {
 function buildTable() {
   const tbody = document.getElementById('lecture-tbody');
   tbody.innerHTML = '';
-
   lectureData.forEach(lec => {
     const tr = document.createElement('tr');
 
@@ -806,33 +588,26 @@ function buildTable() {
     tdFmt.innerHTML = `<span class="chip">${lec.deck_format.toUpperCase()}</span>`;
 
     const tdSegs = document.createElement('td');
-    const segNames = lec.segments.map(s => s.srt_name).join('\n');
-    tdSegs.innerHTML = `<span class="chip chip-green" title="${escHtml(segNames)}">${lec.segments.length}</span>`;
+    tdSegs.innerHTML = `<span class="chip chip-green" title="${escHtml(lec.segments.map(s=>s.srt_name).join('\n'))}">${lec.segments.length}</span>`;
 
     const tdCover = document.createElement('td');
     const sel = document.createElement('select');
     sel.id = `cover-select-${lec.lecture_num}`;
-    ['auto', 'yes', 'no'].forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v;
-      opt.textContent = v === 'auto' ? 'Auto-detect' : v === 'yes' ? 'Always' : 'Never';
-      if (v === globalCoverMode) opt.selected = true;
-      sel.appendChild(opt);
+    ['auto','yes','no'].forEach(v => {
+      const o = document.createElement('option');
+      o.value = v; o.textContent = v==='auto'?'Auto-detect':v==='yes'?'Always':'Never';
+      if (v === globalCoverMode) o.selected = true;
+      sel.appendChild(o);
     });
     tdCover.appendChild(sel);
 
-    const tdInclude = document.createElement('td');
-    const toggleLabel = document.createElement('label');
-    toggleLabel.className = 'toggle';
-    const cb = document.createElement('input');
-    cb.type = 'checkbox'; cb.checked = true;
-    cb.id = `include-${lec.lecture_num}`;
-    const sliderSpan = document.createElement('span');
-    sliderSpan.className = 'slider';
-    toggleLabel.append(cb, sliderSpan);
-    tdInclude.appendChild(toggleLabel);
+    const tdIncl = document.createElement('td');
+    const lbl = document.createElement('label'); lbl.className='toggle';
+    const cb  = document.createElement('input');  cb.type='checkbox'; cb.checked=true; cb.id=`include-${lec.lecture_num}`;
+    const sl  = document.createElement('span');   sl.className='slider';
+    lbl.append(cb,sl); tdIncl.appendChild(lbl);
 
-    tr.append(tdName, tdFmt, tdSegs, tdCover, tdInclude);
+    tr.append(tdName,tdFmt,tdSegs,tdCover,tdIncl);
     tbody.appendChild(tr);
   });
 }
@@ -841,39 +616,44 @@ function buildTable() {
    PROCESS
 ════════════════════════════════════════════════════════ */
 async function doProcess() {
-  const deck = document.getElementById('deck-path').value.trim();
-  const srt  = document.getElementById('srt-path').value.trim();
-  const out  = document.getElementById('out-path').value.trim();
-
   const lectures = lectureData.map(lec => ({
     lecture_num: lec.lecture_num,
     include:     document.getElementById(`include-${lec.lecture_num}`).checked,
     cover_mode:  document.getElementById(`cover-select-${lec.lecture_num}`).value,
   }));
-
-  if (!lectures.some(l => l.include)) {
-    alert('Please include at least one lecture.');
-    return;
-  }
+  if (!lectures.some(l => l.include)) { alert('Please include at least one lecture.'); return; }
 
   showStep('progress');
-  resetProgress();
+  document.getElementById('log-box').innerHTML = '';
+  setProgress(0);
+  document.getElementById('progress-label').textContent = 'Starting…';
+
+  let body;
+  if (isLocal) {
+    body = {
+      deck_path:     document.getElementById('deck-path').value.trim(),
+      srt_folder:    document.getElementById('srt-path').value.trim(),
+      output_folder: document.getElementById('out-path').value.trim(),
+      lectures,
+    };
+  } else {
+    body = { session_id: currentSessionId, lectures };
+  }
 
   try {
     const res = await fetch('/api/process', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({deck_path: deck, srt_folder: srt, output_folder: out, lectures}),
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body),
     });
     if (!res.ok) {
-      const err = await res.json();
-      appendLog({time: '--:--:--', level: 'error', msg: 'Error: ' + (err.detail || 'unknown')});
+      appendLog({time:'--:--:--',level:'error',msg:'Error: '+(await res.json()).detail});
       return;
     }
     const {job_id} = await res.json();
-    listenProgress(job_id, lectures.filter(l => l.include).length);
+    currentJobId = job_id;
+    listenProgress(job_id, lectures.filter(l=>l.include).length);
   } catch(e) {
-    appendLog({time: '--:--:--', level: 'error', msg: 'Connection error: ' + e.message});
+    appendLog({time:'--:--:--',level:'error',msg:'Connection error: '+e.message});
   }
 }
 
@@ -882,79 +662,171 @@ async function doProcess() {
 ════════════════════════════════════════════════════════ */
 function listenProgress(jobId, numLectures) {
   const es = new EventSource(`/api/progress/${jobId}`);
-  let eventCount = 0;
-
+  let n = 0;
   es.onmessage = e => {
     const evt = JSON.parse(e.data);
-    appendLog(evt);
-    eventCount++;
-    if (evt.level === 'success') {
-      setProgress(Math.min(95, (eventCount / (numLectures * 8)) * 100));
-    }
-    if (evt.level === 'done') {
-      es.close();
-      setProgress(100);
-      document.getElementById('progress-label').textContent = 'Complete!';
+    appendLog(evt); n++;
+    if (evt.level==='success') setProgress(Math.min(95,(n/(numLectures*8))*100));
+    if (evt.level==='done') {
+      es.close(); setProgress(100);
+      document.getElementById('progress-label').textContent='Complete!';
       if (evt.error) {
-        appendLog({time: evt.time, level: 'error', msg: 'Finished with errors. See log above.'});
+        appendLog({time:evt.time,level:'error',msg:'Finished with errors. See log above.'});
       } else {
-        showDone(evt.output_files || []);
+        showDone(evt.output_files||[]);
       }
     }
   };
-  es.onerror = () => {
-    es.close();
-    appendLog({time: '--:--:--', level: 'error', msg: 'Lost connection to server.'});
-  };
+  es.onerror = () => { es.close(); appendLog({time:'--:--:--',level:'error',msg:'Lost connection to server.'}); };
 }
 
-function resetProgress() {
-  document.getElementById('log-box').innerHTML = '';
-  setProgress(0);
-  document.getElementById('progress-label').textContent = 'Starting…';
-}
 function setProgress(pct) {
-  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-bar').style.width = pct+'%';
   if (pct < 100)
     document.getElementById('progress-label').textContent = `${Math.round(pct)}% — processing…`;
 }
 function appendLog(evt) {
   const box  = document.getElementById('log-box');
   const line = document.createElement('div');
-  line.className = `log-line log-${evt.level || 'info'}`;
-  line.innerHTML = `<span class="log-time">${escHtml(evt.time)}</span>
-                    <span class="log-msg">${escHtml(evt.msg)}</span>`;
+  line.className = `log-line log-${evt.level||'info'}`;
+  line.innerHTML = `<span class="log-time">${escHtml(evt.time)}</span><span class="log-msg">${escHtml(evt.msg)}</span>`;
   box.appendChild(line);
   box.scrollTop = box.scrollHeight;
-  if (evt.level !== 'error')
-    document.getElementById('progress-label').textContent = evt.msg.slice(0, 80);
+  if (evt.level!=='error')
+    document.getElementById('progress-label').textContent = evt.msg.slice(0,80);
 }
 
 /* ════════════════════════════════════════════════════════
    DONE
 ════════════════════════════════════════════════════════ */
 function showDone(files) {
-  const ul = document.getElementById('result-files');
-  ul.innerHTML = '';
-  if (!files.length) {
-    ul.innerHTML = '<li>No files listed (check the log for errors).</li>';
-  } else {
-    files.forEach(f => {
-      const li = document.createElement('li');
-      li.textContent = f;
-      ul.appendChild(li);
+  if (isLocal) {
+    document.getElementById('done-local').style.display  = 'block';
+    document.getElementById('done-remote').style.display = 'none';
+    const ul = document.getElementById('result-files');
+    ul.innerHTML = '';
+    (files.length ? files : ['No files listed (check log for errors).']).forEach(f => {
+      const li = document.createElement('li'); li.textContent = f; ul.appendChild(li);
     });
+  } else {
+    document.getElementById('done-local').style.display  = 'none';
+    document.getElementById('done-remote').style.display = 'block';
   }
   showStep('done');
+}
+
+function downloadZip() {
+  if (currentJobId) window.location.href = `/api/download/${currentJobId}`;
+}
+
+/* ════════════════════════════════════════════════════════
+   FILE BROWSER  (local mode)
+════════════════════════════════════════════════════════ */
+let browserTarget='', browserCurrent='', browserFocused=null, allowFiles=false;
+
+function openBrowser(target) {
+  if (!isLocal) return;
+  browserTarget = target; allowFiles = (target==='deck');
+  document.getElementById('browser-title').textContent =
+    {deck:'Select deck file or folder of decks',srt:'Select SRT folder',out:'Select output folder'}[target];
+  document.getElementById('browser-select-btn').textContent =
+    allowFiles ? 'Select this folder / file' : 'Select this folder';
+  browserFocused = null;
+  document.getElementById('browser-overlay').classList.add('open');
+  document.addEventListener('keydown', browserKeyHandler);
+  navigateTo(document.getElementById(`${target}-path`).value || '');
+}
+function closeBrowser() {
+  document.getElementById('browser-overlay').classList.remove('open');
+  document.removeEventListener('keydown', browserKeyHandler);
+}
+function handleOverlayClick(e) {
+  if (e.target===document.getElementById('browser-overlay')) closeBrowser();
+}
+
+async function navigateTo(path) {
+  const list = document.getElementById('file-list');
+  list.innerHTML = '<div class="spinner"></div>';
+  updateSelectedLabel(null);
+  try {
+    const res  = await fetch('/api/browse'+(path?'?path='+encodeURIComponent(path):''));
+    if (!res.ok) { const err=await res.json(); list.innerHTML=`<p style="color:var(--error);padding:20px;font-size:13px">Error: ${escHtml(err.detail||'unknown')}</p>`; return; }
+    const data = await res.json();
+    browserCurrent = data.current;
+    renderBreadcrumb(data.current);
+    renderEntries(data.entries, data.parent);
+    browserFocused = null;
+    updateSelectedLabel(null);
+  } catch(e) { list.innerHTML=`<p style="color:var(--error);padding:20px;font-size:13px">Connection error: ${escHtml(e.message)}</p>`; }
+}
+
+function renderBreadcrumb(fullPath) {
+  const bc=document.getElementById('breadcrumb'); bc.innerHTML='';
+  const sep=fullPath.includes('/')?'/':'\\';
+  const parts=fullPath.split(sep).filter(Boolean);
+  const root=document.createElement('span'); root.className='bc-part';
+  root.textContent=sep==='/'?'/':parts[0]+sep; root.onclick=()=>navigateTo(sep==='/'?'/':parts[0]);
+  bc.appendChild(root);
+  let cum=sep==='/'?'':parts[0]; const si=sep==='/'?0:1;
+  for(let i=si;i<parts.length;i++){
+    cum=sep==='/'?`${cum}/${parts[i]}`:`${cum}${sep}${parts[i]}`;
+    const isLast=i===parts.length-1;
+    const sepc=document.createElement('span'); sepc.className='bc-sep'; sepc.textContent=' '+sep+' '; bc.appendChild(sepc);
+    const part=document.createElement('span'); part.className='bc-part'+(isLast?' current':'');
+    part.textContent=parts[i]; part.title=cum;
+    if(!isLast){const c=cum; part.onclick=()=>navigateTo(c);}
+    bc.appendChild(part);
+  }
+}
+
+function renderEntries(entries, parent) {
+  const list=document.getElementById('file-list'); list.innerHTML='';
+  if(parent){const up=mkEntry('⬆','..  (go up)','dir',parent); up.onclick=()=>navigateTo(parent); list.appendChild(up);}
+  entries.forEach(e=>{
+    const isDir=e.type==='dir', isDeck=e.type==='deck';
+    const icon=isDir?'📁':isDeck?(e.name.endsWith('.pdf')?'📕':'📊'):'📄';
+    const badge=isDeck?e.name.split('.').pop().toLowerCase():null;
+    const row=mkEntry(icon,e.name,e.type,e.path,badge);
+    row.addEventListener('click',()=>{
+      if(isDir) navigateTo(e.path);
+      else if(isDeck&&allowFiles) setFocus(row,e.path);
+    });
+    list.appendChild(row);
+  });
+}
+
+function mkEntry(icon,name,type,path,badge){
+  const row=document.createElement('div'); row.className='file-entry'; row.dataset.path=path;
+  row.innerHTML=`<span class="file-icon">${icon}</span><span class="file-name" title="${escHtml(path)}">${escHtml(name)}</span>${badge?`<span class="file-type-badge ${badge}">${badge.toUpperCase()}</span>`:''}`;
+  return row;
+}
+function setFocus(row,path){
+  document.querySelectorAll('.file-entry.focused').forEach(r=>r.classList.remove('focused'));
+  row.classList.add('focused'); browserFocused=path; updateSelectedLabel(path);
+}
+function updateSelectedLabel(path){
+  const span=document.getElementById('selected-path-text');
+  if(path){const n=path.split('/').pop()||path.split('\\').pop()||path; span.textContent=n; span.style.color='var(--accent)';}
+  else{span.textContent=browserCurrent||'No selection'; span.style.color='';}
+}
+function confirmBrowserSelection(){
+  const chosen=browserFocused||browserCurrent; if(!chosen) return;
+  document.getElementById(`${browserTarget}-path`).value=chosen; closeBrowser();
+}
+function browserKeyHandler(e){
+  if(e.key==='Escape'){closeBrowser();return;}
+  if(e.key==='Enter'){confirmBrowserSelection();return;}
+  const rows=[...document.querySelectorAll('#file-list .file-entry')]; if(!rows.length) return;
+  const idx=rows.findIndex(r=>r.classList.contains('focused'));
+  if(e.key==='ArrowDown'){e.preventDefault();const nx=rows[Math.min(idx+1,rows.length-1)];if(nx.dataset.path!==browserCurrent){setFocus(nx,nx.dataset.path);nx.scrollIntoView({block:'nearest'});}}
+  if(e.key==='ArrowUp'){e.preventDefault();if(idx<=0)return;const pv=rows[idx-1];setFocus(pv,pv.dataset.path);pv.scrollIntoView({block:'nearest'});}
 }
 
 /* ════════════════════════════════════════════════════════
    UTILS
 ════════════════════════════════════════════════════════ */
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function escHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
 </body>
