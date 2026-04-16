@@ -72,14 +72,24 @@
   @media(max-width:600px){ .upload-pair { grid-template-columns:1fr; } }
 
   .upload-zone { border:2px dashed var(--border); border-radius:10px; padding:24px 16px;
-                 text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
+                 text-align:center; transition:border-color .2s, background .2s;
                  background:var(--surface); position:relative; }
-  .upload-zone:hover, .upload-zone.dragover { border-color:var(--accent); background:rgba(108,99,255,.06); }
+  .upload-zone.dragover { border-color:var(--accent); background:rgba(108,99,255,.06); }
   .upload-zone.has-files { border-color:var(--success); border-style:solid; }
   .upload-zone input[type=file] { display:none; }
   .upload-icon { font-size:32px; margin-bottom:8px; }
   .upload-zone h3 { font-size:14px; font-weight:700; margin-bottom:4px; }
-  .upload-zone p  { font-size:12px; color:var(--muted); }
+  .upload-zone p  { font-size:12px; color:var(--muted); margin-bottom:14px; }
+  .upload-btns { display:flex; flex-direction:column; gap:8px; align-items:center; }
+  .pick-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 20px;
+              border-radius:7px; font-size:13px; font-weight:700; border:none; cursor:pointer;
+              transition:opacity .15s; white-space:nowrap; }
+  .pick-btn-files  { background:var(--accent); color:#fff; }
+  .pick-btn-folder { background:var(--surface); color:var(--text);
+                     border:1px solid var(--border); }
+  .pick-btn:hover { opacity:.85; }
+  .pick-divider { font-size:11px; color:var(--muted); }
+  .drop-hint { font-size:11px; color:var(--muted); margin-top:10px; }
   .upload-file-list { margin-top:12px; text-align:left; }
   .upload-file-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted);
                       padding:3px 0; }
@@ -263,26 +273,63 @@
       <!-- REMOTE: file upload -->
       <div id="remote-inputs" style="display:none">
         <div class="upload-pair">
-          <div class="upload-zone" id="deck-zone" onclick="document.getElementById('deck-files').click()"
+
+          <!-- Deck upload -->
+          <div class="upload-zone" id="deck-zone"
                ondragover="onDragOver(event,'deck-zone')" ondragleave="onDragLeave('deck-zone')"
                ondrop="onDrop(event,'deck-files','deck-zone')">
+            <!-- individual files picker -->
             <input type="file" id="deck-files" accept=".pptx,.pdf" multiple
                    onchange="onFilePick('deck-files','deck-zone','deck-file-list')"/>
+            <!-- folder picker -->
+            <input type="file" id="deck-folder" accept=".pptx,.pdf" multiple webkitdirectory
+                   onchange="onFilePick('deck-folder','deck-zone','deck-file-list','deck-files')"/>
             <div class="upload-icon">📊</div>
-            <h3>Deck file(s)</h3>
-            <p>One .pptx or .pdf per lecture</p>
+            <h3>Slide deck(s)</h3>
+            <p>One .pptx or .pdf file per lecture</p>
+            <div class="upload-btns">
+              <button class="pick-btn pick-btn-files"
+                      onclick="event.stopPropagation();document.getElementById('deck-files').click()">
+                📂 Choose files…
+              </button>
+              <span class="pick-divider">or</span>
+              <button class="pick-btn pick-btn-folder"
+                      onclick="event.stopPropagation();document.getElementById('deck-folder').click()">
+                🗂 Choose folder…
+              </button>
+            </div>
+            <p class="drop-hint">You can also drag &amp; drop files here</p>
             <div id="deck-file-list" class="upload-file-list"></div>
           </div>
-          <div class="upload-zone" id="srt-zone" onclick="document.getElementById('srt-files').click()"
+
+          <!-- SRT upload -->
+          <div class="upload-zone" id="srt-zone"
                ondragover="onDragOver(event,'srt-zone')" ondragleave="onDragLeave('srt-zone')"
                ondrop="onDrop(event,'srt-files','srt-zone')">
+            <!-- individual files picker -->
             <input type="file" id="srt-files" accept=".srt" multiple
                    onchange="onFilePick('srt-files','srt-zone','srt-file-list')"/>
+            <!-- folder picker -->
+            <input type="file" id="srt-folder" accept=".srt" multiple webkitdirectory
+                   onchange="onFilePick('srt-folder','srt-zone','srt-file-list','srt-files')"/>
             <div class="upload-icon">📝</div>
-            <h3>SRT files</h3>
-            <p>All segments for all lectures</p>
+            <h3>SRT transcript(s)</h3>
+            <p>All .srt segments for all lectures</p>
+            <div class="upload-btns">
+              <button class="pick-btn pick-btn-files"
+                      onclick="event.stopPropagation();document.getElementById('srt-files').click()">
+                📂 Choose files…
+              </button>
+              <span class="pick-divider">or</span>
+              <button class="pick-btn pick-btn-folder"
+                      onclick="event.stopPropagation();document.getElementById('srt-folder').click()">
+                🗂 Choose folder…
+              </button>
+            </div>
+            <p class="drop-hint">You can also drag &amp; drop files here</p>
             <div id="srt-file-list" class="upload-file-list"></div>
           </div>
+
         </div>
       </div>
 
@@ -437,7 +484,7 @@ function resetAll() {
   currentJobId     = null;
   lectureData = [];
   // clear upload zones
-  ['deck-files','srt-files'].forEach(id => {
+  ['deck-files','srt-files','deck-folder','srt-folder'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -495,22 +542,45 @@ function onDrop(e, inputId, zoneId) {
   input.files = dt.files;
   input.dispatchEvent(new Event('change'));
 }
-function onFilePick(inputId, zoneId, listId) {
-  const files = [...document.getElementById(inputId).files];
-  const zone  = document.getElementById(zoneId);
-  const list  = document.getElementById(listId);
+// inputId: the input that changed; mergeIntoId: optional primary input to merge files into
+function onFilePick(inputId, zoneId, listId, mergeIntoId) {
+  const input = document.getElementById(inputId);
+  let files = [...input.files];
+
+  // If this is a folder picker, merge its files into the primary input
+  if (mergeIntoId) {
+    const primary = document.getElementById(mergeIntoId);
+    const dt = new DataTransfer();
+    for (const f of primary.files) dt.items.add(f);
+    for (const f of files) dt.items.add(f);
+    primary.files = dt.files;
+    files = [...primary.files];
+    input.value = ''; // reset folder picker so it can be re-triggered
+  }
+
+  const zone = document.getElementById(zoneId);
+  const list = document.getElementById(listId);
   zone.classList.toggle('has-files', files.length > 0);
   list.innerHTML = '';
   if (files.length === 0) return;
-  files.forEach(f => {
+
+  // Show up to 5 filenames, then a count
+  files.slice(0, 5).forEach(f => {
     const div = document.createElement('div');
     div.className = 'upload-file-item';
     div.textContent = f.name;
     list.appendChild(div);
   });
+  if (files.length > 5) {
+    const more = document.createElement('div');
+    more.className = 'upload-file-item';
+    more.style.color = 'var(--muted)';
+    more.textContent = `… and ${files.length - 5} more`;
+    list.appendChild(more);
+  }
   const cnt = document.createElement('div');
   cnt.style.textAlign = 'center';
-  cnt.innerHTML = `<span class="upload-count">${files.length} file${files.length>1?'s':''} selected</span>`;
+  cnt.innerHTML = `<span class="upload-count">${files.length} file${files.length>1?'s':''} ready</span>`;
   list.appendChild(cnt);
 }
 
