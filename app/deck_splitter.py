@@ -220,11 +220,15 @@ def split_deck(
 ) -> None:
     """
     Extract slides [first_slide … last_slide] (1-based, inclusive) from *src_path*
-    and save to *dst_path*.  If *cover_slide* is True, slide 1 is prepended as a
-    duplicate (making the output's slide 1 a cover and slide 2 the segment start).
+    and save to *dst_path*.
+
+    If *cover_slide* is True, slide 1 is prepended as a duplicate before the
+    segment range — except when *first_slide* is already 1: the range already
+    opens with the deck's first slide (the cover), so prepending would show it
+    twice.
     """
     indices = list(range(first_slide, last_slide + 1))
-    if cover_slide:
+    if cover_slide and first_slide > 1:
         indices = [1] + indices
 
     src_path = Path(src_path)
